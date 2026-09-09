@@ -6,36 +6,39 @@
 <title>WAKABAポータル</title>
 
 <style>
+
 body{
-    font-family:sans-serif;
-    max-width:800px;
-    margin:auto;
-    padding:20px;
-    background:#f5f5f5;
+    font-family: sans-serif;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background: #f5f5f5;
+}
+
+h1{
+    text-align: center;
 }
 
 .card{
-    background:white;
-    padding:15px;
-    margin:10px 0;
-    border-radius:10px;
-    box-shadow:0 2px 5px rgba(0,0,0,.1);
+    background: white;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,.1);
+}
+
+input,button{
+    padding: 10px;
+    margin: 5px;
 }
 
 .hidden{
     display:none;
 }
 
-input,button{
-    padding:10px;
-    margin:5px;
-}
-
-h1{
-    text-align:center;
-}
 </style>
 </head>
+
 <body>
 
 <div id="login">
@@ -43,6 +46,7 @@ h1{
 <h1>🎓 WAKABAポータル</h1>
 
 <div class="card">
+
 <p>合言葉を入力してください</p>
 
 <input type="password" id="pw">
@@ -59,7 +63,7 @@ h1{
 
 <div id="main" class="hidden">
 
-<h1>📚 提出物カウントダウン</h1>
+<h1>📚 WAKABAポータル</h1>
 
 <div id="list"></div>
 
@@ -69,81 +73,135 @@ h1{
 
 const PASSWORD = "wakaba2026";
 
-function checkPassword() {
+function checkPassword(){
 
     const pw = document.getElementById("pw").value;
 
     if(pw === PASSWORD){
-        document.getElementById("login").classList.add("hidden");
-        document.getElementById("main").classList.remove("hidden");
+
+        document.getElementById("login")
+        .classList.add("hidden");
+
+        document.getElementById("main")
+        .classList.remove("hidden");
+
         loadTasks();
+
     }else{
-        document.getElementById("error").innerText =
-        "合言葉が違います";
+
+        document.getElementById("error")
+        .innerText = "合言葉が違います";
+
     }
 }
 
 async function loadTasks(){
 
-const sheetId =
-"1aMZqKCpTziQJJeL30ijG9SN15gAnzdB6jwbxhrO8Kvw";
+    const sheetId =
+    "1aMZqKCpTziQJJeL30ijG9SN15gAnzdB6jwbxhrO8Kvw";
 
-const url =
-`https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
+    const url =
+    `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
 
-const response = await fetch(url);
+    const response = await fetch(url);
 
-const text = await response.text();
+    const text = await response.text();
 
-const json =
-JSON.parse(text.substring(47).slice(0,-2));
+    const json =
+    JSON.parse(text.substring(47).slice(0,-2));
 
-const rows = json.table.rows;
+    const rows = json.table.rows;
 
-const list =
-document.getElementById("list");
+    const list =
+    document.getElementById("list");
 
-list.innerHTML = "";
+    list.innerHTML = "";
 
-rows.forEach(row=>{
+    let tasks = [];
 
-const name = row.c[0]?.v;
-const deadline = row.c[1]?.f || row.c[1]?.v;
+    rows.forEach(row=>{
 
-if(!name || !deadline) return;
+        const name = row.c[0]?.v;
+        const deadline = row.c[1]?.f || row.c[1]?.v;
 
-const today = new Date();
-const limit = new Date(deadline);
+        if(!name || !deadline) return;
 
-const diff =
-Math.ceil(
-(limit-today)/(1000*60*60*24)
-);
+        const today = new Date();
+        const limit = new Date(deadline);
 
-let color = "#43a047";
+        const diff =
+        Math.ceil(
+        (limit - today) /
+        (1000 * 60 * 60 * 24)
+        );
 
-if(diff <= 3){
-    color = "#e53935";
-}
-else if(diff <= 7){
-    color = "#fbc02d";
-}
+        tasks.push({
+            name,
+            deadline,
+            diff
+        });
 
-if(diff >= 0){
+    });
 
-list.innerHTML += `
-<div class="card"
-style="border-left:8px solid ${color}">
-<h2>${name}</h2>
-<p>締切：${deadline}</p>
-<h3>あと ${diff} 日</h3>
-</div>
-`;
+    tasks.sort((a,b)=>a.diff-b.diff);
 
-}
+    tasks.forEach(task=>{
 
-});
+        if(task.diff < 0) return;
 
+        let color = "#43a047";
+
+        if(task.diff <= 3){
+            color = "#e53935";
+        }
+        else if(task.diff <= 7){
+            color = "#fbc02d";
+        }
+
+        list.innerHTML += `
+        <div class="card"
+        style="border-left:8px solid ${color}">
+            <h2>${task.name}</h2>
+            <p>締切：${task.deadline}</p>
+            <h3>あと ${task.diff} 日</h3>
+        </div>
+        `;
+
+    });
+
+    const examDate =
+    new Date("2027-01-16");
+
+    const examDiff =
+    Math.ceil(
+    (examDate - new Date()) /
+    (1000 * 60 * 60 * 24)
+    );
+
+    list.innerHTML += `
+    <div class="card"
+    style="border-left:8px solid #1976d2">
+        <h2>🎓 共通テストまで</h2>
+        <h3>あと ${examDiff} 日</h3>
+    </div>
+    `;
+
+    const graduationDate =
+    new Date("2027-02-28");
+
+    const graduationDiff =
+    Math.ceil(
+    (graduationDate - new Date()) /
+    (1000 * 60 * 60 * 24)
+    );
+
+    list.innerHTML += `
+    <div class="card"
+    style="border-left:8px solid #7b1fa2">
+        <h2>🌸 卒業まで</h2>
+        <h3>あと ${graduationDiff} 日</h3>
+    </div>
+    `;
 }
 
 </script>
