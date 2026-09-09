@@ -3,37 +3,147 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>WAKABAポータル</title>
+<title>WAKABA PORTAL</title>
 
 <style>
 
-body{
-    font-family: sans-serif;
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-    background: #f5f5f5;
+:root{
+    --wakaba:#7a0019;
+    --danger:#c62828;
+    --warning:#ef6c00;
+    --bg:#f7f7f7;
+    --text:#333333;
 }
 
-h1{
-    text-align: center;
+body{
+    margin:0;
+    padding:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:
+    "Yu Gothic",
+    "Hiragino Sans",
+    sans-serif;
+}
+
+.header{
+    background:var(--wakaba);
+    color:white;
+    text-align:center;
+    padding:40px 20px;
+}
+
+.header h1{
+    margin:0;
+    font-size:2rem;
+    letter-spacing:3px;
+}
+
+.header p{
+    margin-top:10px;
+    opacity:0.9;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+}
+
+.section-title{
+    font-size:1.4rem;
+    color:var(--wakaba);
+    margin:40px 0 20px;
+    border-bottom:2px solid var(--wakaba);
+    padding-bottom:10px;
 }
 
 .card{
-    background: white;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,.1);
+    background:white;
+    border-radius:16px;
+    padding:20px;
+    margin-bottom:18px;
+    box-shadow:
+    0 4px 12px rgba(0,0,0,0.08);
 }
 
-input,button{
-    padding: 10px;
-    margin: 5px;
+.card h2{
+    margin-top:0;
+    margin-bottom:15px;
+    font-size:1.3rem;
+}
+
+.days{
+    font-size:2.2rem;
+    font-weight:bold;
+}
+
+.date{
+    color:#666;
+}
+
+.red{
+    border-left:8px solid var(--danger);
+}
+
+.yellow{
+    border-left:8px solid var(--warning);
+}
+
+.maroon{
+    border-left:8px solid var(--wakaba);
+}
+
+.special{
+    border-left:8px solid #3f51b5;
+}
+
+.login-box{
+    max-width:500px;
+    margin:80px auto;
+    background:white;
+    padding:30px;
+    border-radius:16px;
+    box-shadow:
+    0 4px 12px rgba(0,0,0,.1);
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    margin-bottom:15px;
+    box-sizing:border-box;
+}
+
+button{
+    width:100%;
+    border:none;
+    background:var(--wakaba);
+    color:white;
+    padding:12px;
+    font-size:1rem;
+    cursor:pointer;
+    border-radius:8px;
+}
+
+button:hover{
+    opacity:0.9;
 }
 
 .hidden{
     display:none;
+}
+
+.center{
+    text-align:center;
+}
+
+.footer{
+    text-align:center;
+    color:#777;
+    padding:30px;
+    font-size:0.9rem;
 }
 
 </style>
@@ -43,19 +153,31 @@ input,button{
 
 <div id="login">
 
-<h1>🎓 WAKABAポータル</h1>
+<div class="login-box">
 
-<div class="card">
+<div class="center">
 
-<p>合言葉を入力してください</p>
+<h1>WAKABA PORTAL</h1>
 
-<input type="password" id="pw">
+<p>
+提出物・連絡事項確認サイト
+</p>
+
+</div>
+
+<input
+type="password"
+id="pw"
+placeholder="合言葉を入力">
 
 <button onclick="checkPassword()">
 入室
 </button>
 
-<p id="error" style="color:red;"></p>
+<p
+id="error"
+style="color:red;text-align:center;">
+</p>
 
 </div>
 
@@ -63,9 +185,31 @@ input,button{
 
 <div id="main" class="hidden">
 
-<h1>📚 WAKABAポータル</h1>
+<div class="header">
+
+<h1>WAKABA PORTAL</h1>
+
+<p>
+提出物カウントダウン
+</p>
+
+</div>
+
+<div class="container">
+
+<h2 class="section-title">
+提出物一覧
+</h2>
 
 <div id="list"></div>
+
+</div>
+
+<div class="footer">
+
+Fukuoka University WAKABA High School
+
+</div>
 
 </div>
 
@@ -75,7 +219,8 @@ const PASSWORD = "wakaba2026";
 
 function checkPassword(){
 
-    const pw = document.getElementById("pw").value;
+    const pw =
+    document.getElementById("pw").value;
 
     if(pw === PASSWORD){
 
@@ -90,7 +235,8 @@ function checkPassword(){
     }else{
 
         document.getElementById("error")
-        .innerText = "合言葉が違います";
+        .textContent =
+        "合言葉が違います";
 
     }
 }
@@ -103,87 +249,127 @@ async function loadTasks(){
     const url =
     `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
 
-    const response = await fetch(url);
+    const response =
+    await fetch(url);
 
-    const text = await response.text();
+    const text =
+    await response.text();
 
     const json =
     JSON.parse(text.substring(47).slice(0,-2));
 
-    const rows = json.table.rows;
+    const rows =
+    json.table.rows;
+
+    let tasks = [];
+
+    rows.forEach(row=>{
+
+        const name =
+        row.c[0]?.v;
+
+        const deadline =
+        row.c[1]?.f ||
+        row.c[1]?.v;
+
+        if(!name || !deadline) return;
+
+        const today =
+        new Date();
+
+        const limit =
+        new Date(deadline);
+
+        const diff =
+        Math.ceil(
+        (limit-today) /
+        (1000*60*60*24)
+        );
+
+        if(diff >= 0){
+
+            tasks.push({
+                name,
+                deadline,
+                diff
+            });
+
+        }
+
+    });
+
+    tasks.sort(
+        (a,b) => a.diff - b.diff
+    );
 
     const list =
     document.getElementById("list");
 
     list.innerHTML = "";
 
-    let tasks = [];
-
-    rows.forEach(row=>{
-
-        const name = row.c[0]?.v;
-        const deadline = row.c[1]?.f || row.c[1]?.v;
-
-        if(!name || !deadline) return;
-
-        const today = new Date();
-        const limit = new Date(deadline);
-
-        const diff =
-        Math.ceil(
-        (limit - today) /
-        (1000 * 60 * 60 * 24)
-        );
-
-        tasks.push({
-            name,
-            deadline,
-            diff
-        });
-
-    });
-
-    tasks.sort((a,b)=>a.diff-b.diff);
-
     tasks.forEach(task=>{
 
-        if(task.diff < 0) return;
-
-        let color = "#43a047";
+        let color =
+        "maroon";
 
         if(task.diff <= 3){
-            color = "#e53935";
-        }
-        else if(task.diff <= 7){
-            color = "#fbc02d";
+
+            color = "red";
+
+        }else if(task.diff <= 7){
+
+            color = "yellow";
+
         }
 
         list.innerHTML += `
-        <div class="card"
-        style="border-left:8px solid ${color}">
-            <h2>${task.name}</h2>
-            <p>締切：${task.deadline}</p>
-            <h3>あと ${task.diff} 日</h3>
+
+        <div class="card ${color}">
+
+            <h2>
+            ${task.name}
+            </h2>
+
+            <div class="days">
+            残り ${task.diff} 日
+            </div>
+
+            <p class="date">
+            締切：${task.deadline}
+            </p>
+
         </div>
+
         `;
 
     });
+
+    const today =
+    new Date();
 
     const examDate =
     new Date("2027-01-16");
 
     const examDiff =
     Math.ceil(
-    (examDate - new Date()) /
-    (1000 * 60 * 60 * 24)
+    (examDate-today)/
+    (1000*60*60*24)
     );
 
     list.innerHTML += `
-    <div class="card"
-    style="border-left:8px solid #1976d2">
-        <h2>🎓 共通テストまで</h2>
-        <h3>あと ${examDiff} 日</h3>
+
+    <div class="card special">
+
+        <h2>
+        大学入学共通テストまで
+        </h2>
+
+        <div class="days">
+        ${examDiff} 日
+        </div>
+
     </div>
+
     `;
 
     const graduationDate =
@@ -191,17 +377,26 @@ async function loadTasks(){
 
     const graduationDiff =
     Math.ceil(
-    (graduationDate - new Date()) /
-    (1000 * 60 * 60 * 24)
+    (graduationDate-today)/
+    (1000*60*60*24)
     );
 
     list.innerHTML += `
-    <div class="card"
-    style="border-left:8px solid #7b1fa2">
-        <h2>🌸 卒業まで</h2>
-        <h3>あと ${graduationDiff} 日</h3>
+
+    <div class="card special">
+
+        <h2>
+        卒業まで
+        </h2>
+
+        <div class="days">
+        ${graduationDiff} 日
+        </div>
+
     </div>
+
     `;
+
 }
 
 </script>
