@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>wakabaポータル</title>
+<title>WAKABAポータル</title>
 
 <style>
 body{
     font-family:sans-serif;
-    max-width:700px;
+    max-width:800px;
     margin:auto;
     padding:20px;
     background:#f5f5f5;
@@ -22,32 +22,37 @@ body{
     box-shadow:0 2px 5px rgba(0,0,0,.1);
 }
 
+.hidden{
+    display:none;
+}
+
 input,button{
     padding:10px;
     margin:5px;
 }
 
-.hidden{
-    display:none;
+h1{
+    text-align:center;
 }
 </style>
 </head>
-
 <body>
 
 <div id="login">
 
-<h1>🔐 wakabaポータル</h1>
+<h1>🎓 WAKABAポータル</h1>
 
 <div class="card">
 <p>合言葉を入力してください</p>
 
 <input type="password" id="pw">
+
 <button onclick="checkPassword()">
 入室
 </button>
 
 <p id="error" style="color:red;"></p>
+
 </div>
 
 </div>
@@ -64,71 +69,78 @@ input,button{
 
 const PASSWORD = "wakaba2026";
 
-function checkPassword(){
+function checkPassword() {
 
-const input =
-document.getElementById("pw").value;
+    const pw = document.getElementById("pw").value;
 
-if(input === PASSWORD){
-
-document.getElementById("login")
-.classList.add("hidden");
-
-document.getElementById("main")
-.classList.remove("hidden");
-
-loadTasks();
-
-}else{
-
-document.getElementById("error")
-.textContent="合言葉が違います";
-
+    if(pw === PASSWORD){
+        document.getElementById("login").classList.add("hidden");
+        document.getElementById("main").classList.remove("hidden");
+        loadTasks();
+    }else{
+        document.getElementById("error").innerText =
+        "合言葉が違います";
+    }
 }
 
-}
+async function loadTasks(){
 
-function loadTasks(){
+const sheetId =
+"1aMZqKCpTziQJJeL30ijG9SN15gAnzdB6jwbxhrO8Kvw";
 
-const tasks = [
+const url =
+`https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
 
-{
-name:"学習記録入力",
-deadline:"2026-09-15"
-},
+const response = await fetch(url);
 
-{
-name:"探究レポート",
-deadline:"2026-09-20"
-},
+const text = await response.text();
 
-{
-name:"模試振り返り",
-deadline:"2026-09-30"
-}
+const json =
+JSON.parse(text.substring(47).slice(0,-2));
 
-];
+const rows = json.table.rows;
 
 const list =
 document.getElementById("list");
 
-tasks.forEach(task=>{
+list.innerHTML = "";
+
+rows.forEach(row=>{
+
+const name = row.c[0]?.v;
+const deadline = row.c[1]?.f || row.c[1]?.v;
+
+if(!name || !deadline) return;
 
 const today = new Date();
-const deadline = new Date(task.deadline);
+const limit = new Date(deadline);
 
-const diff = Math.ceil(
-(deadline - today) /
-(1000*60*60*24)
+const diff =
+Math.ceil(
+(limit-today)/(1000*60*60*24)
 );
 
+let color = "#43a047";
+
+if(diff <= 3){
+    color = "#e53935";
+}
+else if(diff <= 7){
+    color = "#fbc02d";
+}
+
+if(diff >= 0){
+
 list.innerHTML += `
-<div class="card">
-<h2>${task.name}</h2>
-<p>締切：${task.deadline}</p>
+<div class="card"
+style="border-left:8px solid ${color}">
+<h2>${name}</h2>
+<p>締切：${deadline}</p>
 <h3>あと ${diff} 日</h3>
 </div>
 `;
+
+}
 
 });
 
