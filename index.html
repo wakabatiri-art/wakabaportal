@@ -3,13 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>WAKABA PORTAL</title>
 
 <style>
 
 :root{
   --wakaba:#6d1b2e;
-  --bg:#f6f6f6;
+  --bg:#f7f7f7;
   --urgent:#b71c1c;
   --warning:#e65100;
 }
@@ -17,8 +18,8 @@
 body{
   margin:0;
   background:var(--bg);
-  font-family:"Yu Gothic UI","Yu Gothic",sans-serif;
   color:#333;
+  font-family:"Yu Gothic UI","Yu Gothic",sans-serif;
 }
 
 .header{
@@ -29,8 +30,8 @@ body{
 }
 
 .header h1{
-  margin:0;
   color:var(--wakaba);
+  margin:0;
   letter-spacing:3px;
 }
 
@@ -81,7 +82,7 @@ button{
 
 .section-title{
   color:var(--wakaba);
-  margin:30px 0 15px;
+  margin:35px 0 15px;
 }
 
 .top-grid{
@@ -92,10 +93,15 @@ button{
 
 .top-card{
   background:white;
-  padding:30px;
+  padding:35px;
   border-radius:20px;
   text-align:center;
   box-shadow:0 4px 12px rgba(0,0,0,.05);
+}
+
+.top-title{
+  color:#666;
+  margin-bottom:15px;
 }
 
 .top-number{
@@ -104,11 +110,18 @@ button{
   color:var(--wakaba);
 }
 
+.notice-card{
+  background:white;
+  padding:25px;
+  border-radius:20px;
+  box-shadow:0 4px 12px rgba(0,0,0,.05);
+}
+
 .task-card{
   background:white;
   padding:25px;
   border-radius:20px;
-  margin-bottom:15px;
+  margin-bottom:16px;
   box-shadow:0 4px 12px rgba(0,0,0,.05);
 }
 
@@ -150,14 +163,11 @@ button{
     grid-template-columns:1fr;
   }
 
-  .top-number{
-    font-size:2.5rem;
-  }
-
 }
 
 </style>
 </head>
+
 <body>
 
 <div id="loginPage">
@@ -202,9 +212,44 @@ button{
 
 <script>
 
-const PASSWORD = "wakaba2026";
+const SHEET_ID =
+"1aMZqKCpTziQJJeL30ijG9SN15gAnzdB6jwbxhrO8Kvw";
 
-function checkPassword(){
+let PASSWORD = "";
+let EXAM_DATE = "";
+let GRADUATION_DATE = "";
+let NOTICE = "";
+
+async function loadSettings(){
+
+  const url =
+  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?gid=1806886382&tqx=out:json`;
+
+  const response = await fetch(url);
+  const text = await response.text();
+
+  const json =
+  JSON.parse(text.substring(47).slice(0,-2));
+
+  json.table.rows.forEach(row=>{
+
+    const key = row.c[0]?.v;
+    const value = row.c[1]?.v;
+
+    if(key === "パスワード") PASSWORD = value;
+    if(key === "共通テスト") EXAM_DATE = value;
+    if(key === "卒業式") GRADUATION_DATE = value;
+    if(key === "お知らせ") NOTICE = value;
+
+  });
+
+}
+
+async function checkPassword(){
+
+  if(PASSWORD === ""){
+    await loadSettings();
+  }
 
   const pw =
   document.getElementById("pw").value;
@@ -231,17 +276,11 @@ function checkPassword(){
 
 async function loadTasks(){
 
-  const sheetId =
-  "1aMZqKCpTziQJJeL30ijG9SN15gAnzdB6jwbxhrO8Kvw";
-
   const url =
-  `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
+  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?gid=0&tqx=out:json`;
 
-  const response =
-  await fetch(url);
-
-  const text =
-  await response.text();
+  const response = await fetch(url);
+  const text = await response.text();
 
   const json =
   JSON.parse(text.substring(47).slice(0,-2));
@@ -251,119 +290,13 @@ async function loadTasks(){
 
   let tasks = [];
 
-  rows.forEach(row => {
+  rows.forEach(row=>{
 
-    const name = row.c[0]?.v;
-    const deadline = row.c[1]?.f || row.c[1]?.v;
+    const name =
+    row.c[0]?.v;
 
-    if(!name || !deadline) return;
+    const deadline =
+    row.c[1]?.f ||
+    row.c[1]?.v;
 
-    const today = new Date();
-    const limit = new Date(deadline);
-
-    const diff =
-    Math.ceil(
-      (limit - today)
-      /(1000*60*60*24)
-    );
-
-    if(diff >= 0){
-
-      tasks.push({
-        name,
-        deadline,
-        diff
-      });
-
-    }
-
-  });
-
-  tasks.sort((a,b)=>a.diff-b.diff);
-
-  const today =
-  new Date();
-
-  const examDate =
-  new Date("2027-01-16");
-
-  const graduationDate =
-  new Date("2027-03-02");
-
-  const examDiff =
-  Math.ceil(
-    (examDate-today)
-    /(1000*60*60*24)
-  );
-
-  const graduationDiff =
-  Math.ceil(
-    (graduationDate-today)
-    /(1000*60*60*24)
-  );
-
-  const content =
-  document.getElementById("content");
-
-  content.innerHTML = `
-
-  <h2 class="section-title">進路情報</h2>
-
-  <div class="top-grid">
-
-    <div class="top-card">
-      <div>大学入学共通テストまで</div>
-      <div class="top-number">${examDiff}</div>
-      <div>日</div>
-    </div>
-
-    <div class="top-card">
-      <div>卒業まで</div>
-      <div class="top-number">${graduationDiff}</div>
-      <div>日</div>
-    </div>
-
-  </div>
-
-  <h2 class="section-title">提出物</h2>
-
-  `;
-
-  tasks.forEach(task => {
-
-    let css = "normal";
-
-    if(task.diff <= 3){
-      css = "urgent";
-    }else if(task.diff <= 7){
-      css = "warning";
-    }
-
-    content.innerHTML += `
-
-      <div class="task-card ${css}">
-
-        <div class="task-name">
-          ${task.name}
-        </div>
-
-        <div class="task-days">
-          残り ${task.diff} 日
-        </div>
-
-        <div class="task-date">
-          締切：${task.deadline}
-        </div>
-
-      </div>
-
-    `;
-
-  });
-
-}
-
-</script>
-
-</body>
-</html>
+    if(!name
