@@ -552,13 +552,21 @@ async function loadSettings() {
   const data = await fetchGviz(SETTINGS_SHEET_GID, 0);
   const values = {};
 
+  // 通常はA列を項目名、B列を値として読み込みます。
   for (const row of data.table.rows || []) {
     const key = normalizeKey(cellValue(row.c?.[0]));
     const value = cellValue(row.c?.[1]);
     if (key) values[key] = value;
   }
 
-  state.password = values["パスワード"] || "";
+  // Google側が1行目を見出しと判断した場合にも対応します。
+  const firstLabel = normalizeKey(String(data.table.cols?.[0]?.label || ""));
+  const secondLabel = String(data.table.cols?.[1]?.label || "").trim();
+  if (firstLabel && secondLabel && !values[firstLabel]) {
+    values[firstLabel] = secondLabel;
+  }
+
+  state.password = String(values["パスワード"] || "").trim();
   state.examDate = normalizeDateValue(values["共通テスト"] || "");
   state.graduationDate = normalizeDateValue(values["卒業式"] || "");
   state.notice = values["お知らせ"] || "";
@@ -586,7 +594,7 @@ async function checkPassword() {
     await loadPortal();
   } catch (error) {
     console.error(error);
-    loginMessage.textContent = "設定を読み込めませんでした。スプレッドシートの公開設定と設定シートをご確認ください。";
+    loginMessage.textContent = `設定を読み込めませんでした。${error.message}`;
   } finally {
     loginButton.disabled = false;
     loginButton.textContent = "入室";
