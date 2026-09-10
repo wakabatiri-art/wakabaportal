@@ -9,115 +9,80 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --maroon:#651a2b;
-  --maroon-dark:#46101d;
-  --ink:#242126;
-  --muted:#716b70;
-  --line:#e7e1e3;
-  --paper:#fff;
-  --background:#f5f2f3;
-  --urgent:#a52a2a;
-  --warning:#a66a18;
-  --shadow:0 16px 40px rgba(52,24,32,.08);
-}
-*{box-sizing:border-box}
-body{min-height:100vh;margin:0;color:var(--ink);background:linear-gradient(180deg,rgba(101,26,43,.035),transparent 260px),var(--background);font-family:"BIZ UDPGothic","BIZ UDゴシック","Yu Gothic UI","Yu Gothic",sans-serif;-webkit-font-smoothing:antialiased}
-button,input{font:inherit}.hidden{display:none!important}
-.login-page{min-height:100vh;display:grid;place-items:center;padding:28px 18px}
-.login-panel{width:min(100%,460px);padding:42px 36px;background:rgba(255,255,255,.96);border:1px solid var(--line);border-top:5px solid var(--maroon);box-shadow:var(--shadow)}
-.brand,.site-title{margin:0;color:var(--maroon);font-weight:700;letter-spacing:.09em;text-align:center}
-.brand{font-size:clamp(1.85rem,7vw,2.4rem)}
-.login-description{margin:12px 0 32px;color:var(--muted);text-align:center;font-size:.95rem}
-.field-label{display:block;margin-bottom:8px;font-size:.9rem;font-weight:700}
-.password-row{display:grid;grid-template-columns:1fr auto;gap:8px}
-.password-input{width:100%;min-height:50px;padding:12px 14px;border:1px solid #cfc5c8;border-radius:4px;background:#fff;outline:none}
-.password-input:focus{border-color:var(--maroon);box-shadow:0 0 0 3px rgba(101,26,43,.1)}
-.toggle-button{min-width:72px;border:1px solid #cfc5c8;border-radius:4px;background:#faf8f8;cursor:pointer}
-.enter-button{width:100%;min-height:50px;margin-top:18px;border:0;border-radius:4px;background:var(--maroon);color:#fff;font-weight:700;letter-spacing:.08em;cursor:pointer}
-.enter-button:hover{background:var(--maroon-dark)}.enter-button:disabled{opacity:.65;cursor:wait}
-.message{min-height:1.5em;margin:14px 0 0;color:var(--urgent);text-align:center;font-size:.9rem}
-.site-header{background:var(--paper);border-top:7px solid var(--maroon);border-bottom:1px solid var(--line)}
-.header-inner{width:min(1080px,calc(100% - 40px));margin:0 auto;padding:30px 0 26px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
-.site-title{text-align:left;font-size:clamp(1.6rem,5vw,2.25rem)}
-.site-description{margin:8px 0 0;color:var(--muted);font-size:.9rem}.updated-at{margin:0;color:var(--muted);font-size:.82rem;white-space:nowrap}
-.main-container{width:min(1080px,calc(100% - 40px));margin:0 auto;padding:44px 0 72px}.section{margin-top:48px}.section:first-child{margin-top:0}
-.section-heading{display:flex;align-items:center;gap:16px;margin:0 0 20px;color:var(--maroon);font-size:1.15rem;font-weight:700;letter-spacing:.08em}.section-heading:after{content:"";flex:1;height:1px;background:var(--line)}
-.milestone-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-.milestone-card{position:relative;overflow:hidden;min-height:190px;padding:30px;background:linear-gradient(145deg,var(--maroon-dark),var(--maroon));color:#fff;box-shadow:var(--shadow)}
-.milestone-card:nth-child(even){background:linear-gradient(145deg,#3d3538,#665a5f)}
-.milestone-card:after{content:"";position:absolute;right:-55px;bottom:-95px;width:190px;height:190px;border:1px solid rgba(255,255,255,.18);border-radius:50%}
-.milestone-label{position:relative;z-index:1;margin:0;font-weight:700;letter-spacing:.04em}.milestone-count{position:relative;z-index:1;display:flex;align-items:baseline;gap:10px;margin-top:28px}.milestone-number{font-size:clamp(3.5rem,10vw,5.4rem);font-weight:700;line-height:.95}.milestone-unit{font-size:1rem}.milestone-date{position:relative;z-index:1;margin:18px 0 0;color:rgba(255,255,255,.78);font-size:.86rem}
-.notice-card{padding:25px 28px;background:var(--paper);border:1px solid var(--line);border-left:5px solid var(--maroon);box-shadow:0 8px 26px rgba(52,24,32,.045)}.notice-text{margin:0;font-size:1.15rem;line-height:1.9;white-space:pre-wrap}
-.task-list{display:grid;gap:12px}.task-card{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:24px;padding:23px 26px;background:var(--paper);border:1px solid var(--line);border-left:5px solid var(--maroon);box-shadow:0 8px 26px rgba(52,24,32,.045)}.task-card.warning{border-left-color:var(--warning)}.task-card.urgent{border-left-color:var(--urgent)}
-.task-name{margin:0;font-size:1.08rem;font-weight:700;line-height:1.5}.task-deadline{margin:8px 0 0;color:var(--muted);font-size:.88rem}.task-remaining{color:var(--maroon);text-align:right;white-space:nowrap}.task-card.warning .task-remaining{color:var(--warning)}.task-card.urgent .task-remaining{color:var(--urgent)}.task-number{font-size:2.5rem;font-weight:700}.task-unit{margin-left:4px;font-size:.9rem}
-.empty-state,.loading-state,.error-card{padding:28px;background:var(--paper);border:1px solid var(--line);color:var(--muted);text-align:center}.error-card{border-left:5px solid var(--urgent);color:var(--urgent);text-align:left}
-.site-footer{padding:26px 20px 34px;border-top:1px solid var(--line);background:#eee9eb;color:var(--muted);text-align:center;font-size:.8rem}
-@media(max-width:720px){.login-panel{padding:34px 24px}.header-inner{align-items:flex-start;flex-direction:column}.milestone-grid{grid-template-columns:1fr}.milestone-card{min-height:170px}.task-card{grid-template-columns:1fr;gap:18px}.task-remaining{text-align:left}.main-container{width:min(100% - 28px,1080px);padding-top:30px}}
+:root{--maroon:#651a2b;--dark:#45101d;--ink:#252126;--muted:#716b70;--line:#e5dfe1;--paper:#fff;--bg:#f5f2f3;--warning:#a66a18;--urgent:#a52a2a;--shadow:0 14px 36px rgba(52,24,32,.08)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{min-height:100vh;margin:0;background:linear-gradient(180deg,rgba(101,26,43,.04),transparent 260px),var(--bg);color:var(--ink);font-family:"BIZ UDPGothic","BIZ UDゴシック","Yu Gothic UI","Yu Gothic",sans-serif;-webkit-font-smoothing:antialiased}button,input{font:inherit}.hidden{display:none!important}
+a{color:inherit}
+.site-header{background:#fff;border-top:7px solid var(--maroon);border-bottom:1px solid var(--line)}
+.header-inner{width:min(1080px,calc(100% - 40px));margin:auto;padding:26px 0;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{margin:0;color:var(--maroon);font-size:clamp(1.55rem,5vw,2.15rem);font-weight:700;letter-spacing:.1em}.tagline{margin:7px 0 0;color:var(--muted);font-size:.88rem}.home-button{padding:10px 15px;border:1px solid var(--line);border-radius:4px;background:#fff;color:var(--maroon);font-weight:700;cursor:pointer}.home-button:hover{background:#faf7f8}
+.main{width:min(1080px,calc(100% - 40px));margin:auto;padding:42px 0 72px}.section{margin-top:46px}.section:first-child{margin-top:0}.section-title{display:flex;align-items:center;gap:15px;margin:0 0 20px;color:var(--maroon);font-size:1.15rem;letter-spacing:.07em}.section-title:after{content:"";flex:1;height:1px;background:var(--line)}
+.milestone-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.milestone-card{position:relative;overflow:hidden;min-height:180px;padding:28px;background:linear-gradient(145deg,var(--dark),var(--maroon));color:#fff;box-shadow:var(--shadow)}.milestone-card:nth-child(even){background:linear-gradient(145deg,#3d3538,#665a5f)}.milestone-card:after{content:"";position:absolute;right:-55px;bottom:-100px;width:190px;height:190px;border:1px solid rgba(255,255,255,.18);border-radius:50%}.milestone-name{position:relative;z-index:1;margin:0;font-weight:700}.milestone-count{position:relative;z-index:1;display:flex;align-items:baseline;gap:8px;margin-top:25px}.milestone-number{font-size:clamp(3.2rem,9vw,5rem);line-height:1;font-weight:700}.milestone-date{position:relative;z-index:1;margin:16px 0 0;color:rgba(255,255,255,.76);font-size:.84rem}
+.page-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.page-card{padding:24px;background:#fff;border:1px solid var(--line);border-top:4px solid var(--maroon);box-shadow:0 8px 25px rgba(52,24,32,.05);cursor:pointer;text-align:left;transition:transform .18s ease,box-shadow .18s ease}.page-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}.page-name{margin:0;font-size:1.15rem;font-weight:700}.page-open{margin:10px 0 0;color:var(--muted);font-size:.86rem}
+.page-heading{margin-bottom:30px;padding-bottom:22px;border-bottom:1px solid var(--line)}.page-heading h2{margin:0;color:var(--maroon);font-size:clamp(1.55rem,5vw,2.15rem)}.page-heading p{margin:8px 0 0;color:var(--muted)}
+.auth-wrap{max-width:480px;margin:20px auto 0;padding:34px;background:#fff;border:1px solid var(--line);border-top:5px solid var(--maroon);box-shadow:var(--shadow)}.auth-title{margin:0 0 9px;color:var(--maroon);text-align:center;font-size:1.4rem}.auth-help{margin:0 0 25px;color:var(--muted);text-align:center;font-size:.9rem}.field-label{display:block;margin-bottom:8px;font-size:.9rem;font-weight:700}.password-row{display:grid;grid-template-columns:1fr auto;gap:8px}.password-input{width:100%;min-height:49px;padding:12px 14px;border:1px solid #cfc5c8;border-radius:4px;outline:none}.password-input:focus{border-color:var(--maroon);box-shadow:0 0 0 3px rgba(101,26,43,.1)}.small-button{min-width:72px;border:1px solid #cfc5c8;border-radius:4px;background:#faf8f8;cursor:pointer}.primary-button{width:100%;min-height:49px;margin-top:17px;border:0;border-radius:4px;background:var(--maroon);color:#fff;font-weight:700;cursor:pointer}.primary-button:disabled{opacity:.65;cursor:wait}.auth-message{min-height:1.4em;margin:13px 0 0;color:var(--urgent);text-align:center;font-size:.88rem}
+.notice-list,.task-list,.resource-list{display:grid;gap:12px}.notice-card,.task-card,.resource-card{background:#fff;border:1px solid var(--line);box-shadow:0 8px 24px rgba(52,24,32,.045)}.notice-card{padding:23px 26px;border-left:5px solid var(--maroon)}.notice-date{margin:0 0 8px;color:var(--muted);font-size:.82rem}.notice-text{margin:0;font-size:1.12rem;line-height:1.85;white-space:pre-wrap}
+.task-card{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:22px;padding:22px 25px;border-left:5px solid var(--maroon)}.task-card.warning{border-left-color:var(--warning)}.task-card.urgent{border-left-color:var(--urgent)}.task-name{margin:0;font-size:1.06rem}.task-date{margin:8px 0 0;color:var(--muted);font-size:.86rem}.remaining{color:var(--maroon);white-space:nowrap}.task-card.warning .remaining{color:var(--warning)}.task-card.urgent .remaining{color:var(--urgent)}.remaining-number{font-size:2.35rem;font-weight:700}.remaining-unit{margin-left:4px;font-size:.88rem}
+.resource-card{padding:24px 26px}.resource-name{margin:0;font-size:1.06rem}.resource-description{margin:10px 0 18px;color:var(--muted);line-height:1.75}.resource-link{display:inline-block;padding:10px 17px;border:1px solid var(--maroon);border-radius:4px;color:var(--maroon);font-weight:700;text-decoration:none}.resource-link:hover{background:var(--maroon);color:#fff}
+.loading,.empty,.error{padding:26px;background:#fff;border:1px solid var(--line);color:var(--muted);text-align:center}.error{border-left:5px solid var(--urgent);color:var(--urgent);text-align:left}.footer{padding:26px 20px 34px;border-top:1px solid var(--line);background:#eee9eb;color:var(--muted);text-align:center;font-size:.8rem}
+@media(max-width:720px){.header-inner{align-items:flex-start;flex-direction:column}.milestone-grid,.page-grid{grid-template-columns:1fr}.task-card{grid-template-columns:1fr;gap:16px}.auth-wrap{padding:28px 22px}.main{width:min(100% - 28px,1080px);padding-top:30px}}
 </style>
 </head>
 <body>
-<section id="loginPage" class="login-page" aria-labelledby="loginTitle">
-  <div class="login-panel">
-    <h1 id="loginTitle" class="brand">WAKABA PORTAL</h1>
-    <p class="login-description">提出物・学習支援サイト</p>
-    <label class="field-label" for="pw">合言葉</label>
-    <div class="password-row">
-      <input id="pw" class="password-input" type="password" autocomplete="current-password" placeholder="合言葉を入力">
-      <button id="togglePassword" class="toggle-button" type="button">表示</button>
-    </div>
-    <button id="loginButton" class="enter-button" type="button">入室</button>
-    <p id="loginMessage" class="message" role="alert"></p>
+<header class="site-header"><div class="header-inner"><div><h1 class="brand">WAKABA PORTAL</h1><p class="tagline">授業・ホームルーム支援サイト</p></div><button id="homeButton" class="home-button hidden" type="button">トップページへ</button></div></header>
+
+<main class="main">
+  <div id="homeView">
+    <section class="section"><h2 class="section-title">大切な日まで</h2><div id="milestoneGrid" class="milestone-grid"><div class="loading">日程を読み込んでいます。</div></div></section>
+    <section class="section"><h2 class="section-title">ページ一覧</h2><div id="pageGrid" class="page-grid"><div class="loading">ページを読み込んでいます。</div></div></section>
   </div>
-</section>
-<div id="mainPage" class="hidden">
-  <header class="site-header"><div class="header-inner"><div><h1 class="site-title">WAKABA PORTAL</h1><p class="site-description">提出物・学習支援サイト</p></div><p id="updatedAt" class="updated-at"></p></div></header>
-  <main class="main-container">
-    <section class="section" aria-labelledby="milestoneHeading"><h2 id="milestoneHeading" class="section-heading">大切な日まで</h2><div id="milestoneGrid" class="milestone-grid"><div class="loading-state">日程を読み込んでいます。</div></div></section>
-    <section id="noticeSection" class="section hidden" aria-labelledby="noticeHeading"><h2 id="noticeHeading" class="section-heading">お知らせ</h2><div class="notice-card"><p id="noticeText" class="notice-text"></p></div></section>
-    <section class="section" aria-labelledby="taskHeading"><h2 id="taskHeading" class="section-heading">提出物</h2><div id="taskList" class="task-list"><div class="loading-state">提出物を読み込んでいます。</div></div></section>
-  </main>
-  <footer class="site-footer">個人運営の学習支援ページです。学校公式サイトではありません。</footer>
-</div>
+
+  <div id="pageView" class="hidden">
+    <div class="page-heading"><h2 id="currentPageName"></h2><p>お知らせ・提出物・資料</p></div>
+    <section id="authView" class="auth-wrap">
+      <h3 class="auth-title">合言葉の入力</h3><p class="auth-help">このページの合言葉を入力してください。認証はこの端末で24時間保持されます。</p>
+      <label class="field-label" for="pagePassword">合言葉</label>
+      <div class="password-row"><input id="pagePassword" class="password-input" type="password" autocomplete="current-password"><button id="togglePassword" class="small-button" type="button">表示</button></div>
+      <button id="unlockButton" class="primary-button" type="button">ページを開く</button><p id="authMessage" class="auth-message"></p>
+    </section>
+    <div id="pageContent" class="hidden">
+      <section class="section"><h2 class="section-title">お知らせ</h2><div id="noticeList" class="notice-list"></div></section>
+      <section class="section"><h2 class="section-title">提出物</h2><div id="taskList" class="task-list"></div></section>
+      <section class="section"><h2 class="section-title">資料</h2><div id="resourceList" class="resource-list"></div></section>
+    </div>
+  </div>
+</main>
+<footer class="footer">個人運営の学習支援ページです。学校公式サイトではありません。</footer>
+
 <script>
 "use strict";
 const SHEET_ID="1aMZqKCpTziQJJeL30ijG9SN15gAnzdB6jwbxhrO8Kvw";
-const TASK_SHEET_GID="0";
-const SETTINGS_SHEET_GID="1806886382";
-const MILESTONE_SHEET_NAME="大切な日";
-const LOGIN_DURATION_MS=24*60*60*1000;
-const LOGIN_STORAGE_KEY="wakabaPortalLogin";
-const state={password:"",notice:""};
-const loginButton=document.getElementById("loginButton");
-const passwordInput=document.getElementById("pw");
-const loginMessage=document.getElementById("loginMessage");
-const togglePassword=document.getElementById("togglePassword");
-loginButton.addEventListener("click",checkPassword);
-passwordInput.addEventListener("keydown",e=>{if(e.key==="Enter")checkPassword()});
-togglePassword.addEventListener("click",()=>{const hidden=passwordInput.type==="password";passwordInput.type=hidden?"text":"password";togglePassword.textContent=hidden?"非表示":"表示"});
-function gvizUrlByGid(gid,headers){return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?gid=${gid}&headers=${headers}&tqx=out:json`}
-function gvizUrlBySheet(sheet,headers){return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(sheet)}&headers=${headers}&tqx=out:json`}
-async function fetchGviz(url){const response=await fetch(url,{cache:"no-store"});if(!response.ok)throw new Error(`データ取得エラー: ${response.status}`);const text=await response.text();const start=text.indexOf("{");const end=text.lastIndexOf("}");if(start<0||end<0)throw new Error("スプレッドシートの応答を読み取れませんでした。");const data=JSON.parse(text.slice(start,end+1));if(data.status==="error")throw new Error("スプレッドシートの設定を確認してください。");return data}
-function cellValue(cell){if(!cell)return"";if(cell.f!=null)return String(cell.f).trim();if(cell.v!=null)return String(cell.v).trim();return""}
-function normalizeKey(v){return String(v||"").replace(/[\s　]/g,"").trim()}
-function normalizeDateValue(value){const text=String(value||"").trim();const g=text.match(/^Date\((\d{4}),(\d{1,2}),(\d{1,2})\)$/);if(g)return `${g[1]}-${String(Number(g[2])+1).padStart(2,"0")}-${String(g[3]).padStart(2,"0")}`;const m=text.match(/(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})/);if(m)return `${m[1]}-${String(m[2]).padStart(2,"0")}-${String(m[3]).padStart(2,"0")}`;return text}
-function parseLocalDate(value){const n=normalizeDateValue(value);const m=n.match(/^(\d{4})-(\d{2})-(\d{2})$/);if(!m)return null;return new Date(Number(m[1]),Number(m[2])-1,Number(m[3]),23,59,59,999)}
-function startOfToday(){const n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate())}
-function daysUntil(date){const t=new Date(date.getFullYear(),date.getMonth(),date.getDate());return Math.ceil((t-startOfToday())/86400000)}
-function formatJapaneseDate(date){return new Intl.DateTimeFormat("ja-JP",{year:"numeric",month:"long",day:"numeric",weekday:"short"}).format(date)}
-function escapeHtml(v){return String(v).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
-async function passwordHash(value){const bytes=new TextEncoder().encode(value);const hash=await crypto.subtle.digest("SHA-256",bytes);return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,"0")).join("")}
-async function loadSettings(){const data=await fetchGviz(gvizUrlByGid(SETTINGS_SHEET_GID,0));const values={};for(const row of data.table.rows||[]){const key=normalizeKey(cellValue(row.c?.[0]));const value=cellValue(row.c?.[1]);if(key)values[key]=value}const firstLabel=normalizeKey(data.table.cols?.[0]?.label||"");const secondLabel=String(data.table.cols?.[1]?.label||"").trim();if(firstLabel&&secondLabel&&!values[firstLabel])values[firstLabel]=secondLabel;state.password=String(values["パスワード"]||"").trim();state.notice=values["お知らせ"]||"";if(!state.password)throw new Error("設定シートの「パスワード」を読み取れませんでした。")}
-async function saveLogin(){const signature=await passwordHash(state.password);localStorage.setItem(LOGIN_STORAGE_KEY,JSON.stringify({expiresAt:Date.now()+LOGIN_DURATION_MS,signature}))}
-async function hasValidLogin(){try{const saved=JSON.parse(localStorage.getItem(LOGIN_STORAGE_KEY)||"null");if(!saved||Date.now()>=saved.expiresAt)return false;const current=await passwordHash(state.password);return saved.signature===current}catch{return false}}
-async function checkPassword(){loginMessage.textContent="";loginButton.disabled=true;loginButton.textContent="確認中";try{await loadSettings();if(passwordInput.value!==state.password){loginMessage.textContent="合言葉が違います。";return}await saveLogin();showPortal();await loadPortal()}catch(error){console.error(error);loginMessage.textContent=`設定を読み込めませんでした。${error.message}`}finally{loginButton.disabled=false;loginButton.textContent="入室"}}
-function showPortal(){document.getElementById("loginPage").classList.add("hidden");document.getElementById("mainPage").classList.remove("hidden")}
-async function initialize(){try{await loadSettings();if(await hasValidLogin()){showPortal();await loadPortal()}}catch(error){console.error(error)}}
-async function loadPortal(){renderNotice();await Promise.all([loadMilestones(),loadTasks()]);document.getElementById("updatedAt").textContent=`最終表示更新 ${new Intl.DateTimeFormat("ja-JP",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}).format(new Date())}`}
-function renderNotice(){const section=document.getElementById("noticeSection");const text=document.getElementById("noticeText");if(state.notice){text.textContent=state.notice;section.classList.remove("hidden")}else section.classList.add("hidden")}
-async function loadMilestones(){const grid=document.getElementById("milestoneGrid");try{const data=await fetchGviz(gvizUrlBySheet(MILESTONE_SHEET_NAME,1));const items=[];for(const row of data.table.rows||[]){const name=cellValue(row.c?.[0]);const date=parseLocalDate(cellValue(row.c?.[1]));if(!name||!date)continue;const remaining=daysUntil(date);if(remaining<0)continue;items.push({name,date,remaining})}items.sort((a,b)=>a.date-b.date);if(!items.length){grid.innerHTML='<div class="empty-state">現在、表示する日程はありません。</div>';return}grid.innerHTML=items.map(item=>`<article class="milestone-card"><p class="milestone-label">${escapeHtml(item.name)}まで</p><div class="milestone-count"><span class="milestone-number">${item.remaining}</span><span class="milestone-unit">日</span></div><p class="milestone-date">${escapeHtml(formatJapaneseDate(item.date))}</p></article>`).join("")}catch(error){console.error(error);grid.innerHTML='<div class="error-card">「大切な日」シートを読み込めませんでした。シート名、見出し、公開設定をご確認ください。</div>'}}
-async function loadTasks(){const list=document.getElementById("taskList");try{const data=await fetchGviz(gvizUrlByGid(TASK_SHEET_GID,1));const tasks=[];for(const row of data.table.rows||[]){const name=cellValue(row.c?.[0]);const date=parseLocalDate(cellValue(row.c?.[1]));if(!name||!date)continue;const remaining=daysUntil(date);if(remaining<0)continue;tasks.push({name,date,remaining})}tasks.sort((a,b)=>a.date-b.date);if(!tasks.length){list.innerHTML='<div class="empty-state">現在、表示する提出物はありません。</div>';return}list.innerHTML=tasks.map(task=>{const cls=task.remaining<=3?"urgent":task.remaining<=7?"warning":"";return `<article class="task-card ${cls}"><div><h3 class="task-name">${escapeHtml(task.name)}</h3><p class="task-deadline">締切 ${escapeHtml(formatJapaneseDate(task.date))}</p></div><div class="task-remaining"><span class="task-number">${task.remaining}</span><span class="task-unit">日</span></div></article>`}).join("")}catch(error){console.error(error);list.innerHTML='<div class="error-card">提出物を読み込めませんでした。提出物シートの公開設定、gid、日付形式をご確認ください。</div>'}}
-initialize();
+const GIDS={settings:"1806886382",milestones:"402688501",pages:"1759134828",notices:"1027056613",tasks:"0",resources:"2055490412"};
+const LOGIN_MS=24*60*60*1000;
+const state={pages:[],currentPage:null};
+const $=id=>document.getElementById(id);
+function gviz(gid,headers=1){return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?gid=${gid}&headers=${headers}&tqx=out:json`}
+async function fetchSheet(gid,headers=1){const r=await fetch(gviz(gid,headers),{cache:"no-store"});if(!r.ok)throw new Error(`取得エラー ${r.status}`);const t=await r.text(),a=t.indexOf("{"),b=t.lastIndexOf("}");if(a<0||b<0)throw new Error("応答を読み取れません");const j=JSON.parse(t.slice(a,b+1));if(j.status==="error")throw new Error("シート設定を確認してください");return j.table.rows||[]}
+function value(cell){if(!cell)return"";if(cell.f!=null)return String(cell.f).trim();if(cell.v!=null)return String(cell.v).trim();return""}
+function esc(s){return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
+function dateFrom(s){const x=String(s||"").trim();let m=x.match(/^Date\((\d{4}),(\d+),(\d+)\)$/);if(m)return new Date(+m[1],+m[2],+m[3],23,59,59);m=x.match(/(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})/);return m?new Date(+m[1],+m[2]-1,+m[3],23,59,59):null}
+function today(){const n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate())}
+function daysTo(d){return Math.ceil((new Date(d.getFullYear(),d.getMonth(),d.getDate())-today())/86400000)}
+function fmt(d){return new Intl.DateTimeFormat("ja-JP",{year:"numeric",month:"long",day:"numeric",weekday:"short"}).format(d)}
+function isPublic(s){return String(s||"").replace(/[\s　]/g,"")==="公開"}
+async function hash(s){const h=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));return [...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,"0")).join("")}
+async function validSession(page){try{const x=JSON.parse(localStorage.getItem(`wakaba:${page.id}`)||"null");return !!x&&Date.now()<x.expires&&x.signature===await hash(page.password)}catch{return false}}
+async function saveSession(page){localStorage.setItem(`wakaba:${page.id}`,JSON.stringify({expires:Date.now()+LOGIN_MS,signature:await hash(page.password)}))}
+async function loadMilestones(){try{const rows=await fetchSheet(GIDS.milestones);const items=[];for(const r of rows){const name=value(r.c?.[0]),date=dateFrom(value(r.c?.[1]));if(!name||!date)continue;const days=daysTo(date);if(days>=0)items.push({name,date,days})}items.sort((a,b)=>a.date-b.date);$("milestoneGrid").innerHTML=items.length?items.map((x,i)=>`<article class="milestone-card"><p class="milestone-name">${esc(x.name)}まで</p><div class="milestone-count"><span class="milestone-number">${x.days}</span><span>日</span></div><p class="milestone-date">${esc(fmt(x.date))}</p></article>`).join(""):'<div class="empty">現在、表示する日程はありません。</div>'}catch(e){console.error(e);$("milestoneGrid").innerHTML='<div class="error">「大切な日」シートを読み込めませんでした。</div>'}}
+async function loadPages(){try{const rows=await fetchSheet(GIDS.pages);state.pages=[];for(const r of rows){const id=value(r.c?.[0]),name=value(r.c?.[1]),password=value(r.c?.[2]),order=Number(value(r.c?.[3])||999);if(id&&name&&password)state.pages.push({id,name,password,order})}state.pages.sort((a,b)=>a.order-b.order);$("pageGrid").innerHTML=state.pages.length?state.pages.map(p=>`<button class="page-card" type="button" data-page="${esc(p.id)}"><p class="page-name">${esc(p.name)}</p><p class="page-open">ページを開く</p></button>`).join(""):'<div class="empty">表示するページがありません。</div>';document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>openPage(b.dataset.page)))}catch(e){console.error(e);$("pageGrid").innerHTML='<div class="error">「ページ設定」シートを読み込めませんでした。</div>'}}
+async function openPage(id){const page=state.pages.find(p=>p.id===id);if(!page)return;state.currentPage=page;$("homeView").classList.add("hidden");$("pageView").classList.remove("hidden");$("homeButton").classList.remove("hidden");$("currentPageName").textContent=page.name;$("pagePassword").value="";$("authMessage").textContent="";if(await validSession(page)){showContent();await loadPageData()}else{$("authView").classList.remove("hidden");$("pageContent").classList.add("hidden")}history.replaceState(null,"",`?page=${encodeURIComponent(id)}`);window.scrollTo(0,0)}
+function goHome(){$("pageView").classList.add("hidden");$("homeView").classList.remove("hidden");$("homeButton").classList.add("hidden");state.currentPage=null;history.replaceState(null,"",location.pathname);window.scrollTo(0,0)}
+function showContent(){$("authView").classList.add("hidden");$("pageContent").classList.remove("hidden")}
+async function unlock(){const p=state.currentPage;if(!p)return;$("unlockButton").disabled=true;$("authMessage").textContent="";try{if($("pagePassword").value!==p.password){$("authMessage").textContent="合言葉が違います。";return}await saveSession(p);showContent();await loadPageData()}finally{$("unlockButton").disabled=false}}
+async function loadPageData(){$("noticeList").innerHTML='<div class="loading">読み込んでいます。</div>';$("taskList").innerHTML='<div class="loading">読み込んでいます。</div>';$("resourceList").innerHTML='<div class="loading">読み込んでいます。</div>';await Promise.all([loadNotices(),loadTasks(),loadResources()])}
+async function loadNotices(){try{const rows=await fetchSheet(GIDS.notices),items=[];for(const r of rows){if(value(r.c?.[0])!==state.currentPage.id||!isPublic(value(r.c?.[3])))continue;const text=value(r.c?.[1]),date=dateFrom(value(r.c?.[2]));if(text)items.push({text,date})}items.sort((a,b)=>(b.date||0)-(a.date||0));$("noticeList").innerHTML=items.length?items.map(x=>`<article class="notice-card">${x.date?`<p class="notice-date">${esc(fmt(x.date))}</p>`:""}<p class="notice-text">${esc(x.text)}</p></article>`).join(""):'<div class="empty">現在、お知らせはありません。</div>'}catch(e){console.error(e);$("noticeList").innerHTML='<div class="error">お知らせを読み込めませんでした。</div>'}}
+async function loadTasks(){try{const rows=await fetchSheet(GIDS.tasks),items=[];for(const r of rows){if(value(r.c?.[0])!==state.currentPage.id||!isPublic(value(r.c?.[3])))continue;const name=value(r.c?.[1]),date=dateFrom(value(r.c?.[2]));if(!name||!date)continue;const days=daysTo(date);if(days>=0)items.push({name,date,days})}items.sort((a,b)=>a.date-b.date);$("taskList").innerHTML=items.length?items.map(x=>{const c=x.days<=3?"urgent":x.days<=7?"warning":"";return `<article class="task-card ${c}"><div><h3 class="task-name">${esc(x.name)}</h3><p class="task-date">締切 ${esc(fmt(x.date))}</p></div><div class="remaining"><span class="remaining-number">${x.days}</span><span class="remaining-unit">日</span></div></article>`}).join(""):'<div class="empty">現在、表示する提出物はありません。</div>'}catch(e){console.error(e);$("taskList").innerHTML='<div class="error">提出物を読み込めませんでした。</div>'}}
+async function loadResources(){try{const rows=await fetchSheet(GIDS.resources),items=[];for(const r of rows){if(value(r.c?.[0])!==state.currentPage.id||!isPublic(value(r.c?.[4])))continue;const name=value(r.c?.[1]),description=value(r.c?.[2]),url=value(r.c?.[3]);if(name&&/^https?:\/\//i.test(url))items.push({name,description,url})}$("resourceList").innerHTML=items.length?items.map(x=>`<article class="resource-card"><h3 class="resource-name">${esc(x.name)}</h3>${x.description?`<p class="resource-description">${esc(x.description)}</p>`:""}<a class="resource-link" href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">資料を開く</a></article>`).join(""):'<div class="empty">現在、表示する資料はありません。</div>'}catch(e){console.error(e);$("resourceList").innerHTML='<div class="error">資料を読み込めませんでした。</div>'}}
+$("homeButton").addEventListener("click",goHome);$("unlockButton").addEventListener("click",unlock);$("pagePassword").addEventListener("keydown",e=>{if(e.key==="Enter")unlock()});$("togglePassword").addEventListener("click",()=>{const i=$("pagePassword"),h=i.type==="password";i.type=h?"text":"password";$("togglePassword").textContent=h?"非表示":"表示"});
+(async()=>{await Promise.all([loadMilestones(),loadPages()]);const id=new URLSearchParams(location.search).get("page");if(id&&state.pages.some(p=>p.id===id))await openPage(id)})();
 </script>
 </body>
 </html>
