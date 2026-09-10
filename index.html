@@ -3,166 +3,60 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>WAKABA PORTAL</title>
 
 <style>
 
-:root{
-  --wakaba:#6d1b2e;
-  --bg:#f7f7f7;
-  --urgent:#b71c1c;
-  --warning:#e65100;
-}
-
 body{
-  margin:0;
-  background:var(--bg);
-  color:#333;
-  font-family:"Yu Gothic UI","Yu Gothic",sans-serif;
-}
-
-.header{
-  background:#fff;
-  border-bottom:3px solid var(--wakaba);
-  text-align:center;
-  padding:40px 20px;
-}
-
-.header h1{
-  color:var(--wakaba);
-  margin:0;
-  letter-spacing:3px;
-}
-
-.header p{
-  color:#777;
-}
-
-.container{
-  max-width:900px;
-  margin:auto;
-  padding:30px 20px;
+    font-family:"Yu Gothic UI","Yu Gothic",sans-serif;
+    background:#f7f7f7;
+    margin:0;
 }
 
 .login{
-  max-width:450px;
-  margin:100px auto;
-  background:#fff;
-  padding:30px;
-  border-radius:20px;
-  box-shadow:0 4px 12px rgba(0,0,0,.08);
+    max-width:400px;
+    margin:100px auto;
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
 }
 
-.login h1{
-  text-align:center;
-  color:var(--wakaba);
+h1{
+    text-align:center;
+    color:#6d1b2e;
 }
 
 input{
-  width:100%;
-  box-sizing:border-box;
-  padding:12px;
-  margin:10px 0;
+    width:100%;
+    box-sizing:border-box;
+    padding:12px;
+    margin:10px 0;
 }
 
 button{
-  width:100%;
-  padding:12px;
-  border:none;
-  background:var(--wakaba);
-  color:white;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-.hidden{
-  display:none;
-}
-
-.section-title{
-  color:var(--wakaba);
-  margin:35px 0 15px;
-}
-
-.top-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:20px;
-}
-
-.top-card{
-  background:white;
-  padding:35px;
-  border-radius:20px;
-  text-align:center;
-  box-shadow:0 4px 12px rgba(0,0,0,.05);
-}
-
-.top-title{
-  color:#666;
-  margin-bottom:15px;
-}
-
-.top-number{
-  font-size:3rem;
-  font-weight:bold;
-  color:var(--wakaba);
-}
-
-.notice-card{
-  background:white;
-  padding:25px;
-  border-radius:20px;
-  box-shadow:0 4px 12px rgba(0,0,0,.05);
-}
-
-.task-card{
-  background:white;
-  padding:25px;
-  border-radius:20px;
-  margin-bottom:16px;
-  box-shadow:0 4px 12px rgba(0,0,0,.05);
-}
-
-.task-name{
-  font-size:1.2rem;
-  margin-bottom:10px;
-}
-
-.task-days{
-  font-size:2rem;
-  font-weight:bold;
-  color:var(--wakaba);
-}
-
-.task-date{
-  color:#777;
-}
-
-.normal{
-  border-left:6px solid var(--wakaba);
-}
-
-.warning{
-  border-left:6px solid var(--warning);
-}
-
-.urgent{
-  border-left:6px solid var(--urgent);
+    width:100%;
+    padding:12px;
+    border:none;
+    background:#6d1b2e;
+    color:white;
+    border-radius:10px;
 }
 
 #error{
-  color:red;
-  text-align:center;
+    color:red;
+    text-align:center;
 }
 
-@media(max-width:700px){
+.hidden{
+    display:none;
+}
 
-  .top-grid{
-    grid-template-columns:1fr;
-  }
-
+.header{
+    text-align:center;
+    padding:40px;
+    border-bottom:3px solid #6d1b2e;
+    background:white;
 }
 
 </style>
@@ -172,131 +66,63 @@ button{
 
 <div id="loginPage">
 
-  <div class="login">
+<div class="login">
 
-    <h1>WAKABA PORTAL</h1>
+<h1>WAKABA PORTAL</h1>
 
-    <p style="text-align:center;">
-      提出物・学習支援サイト
-    </p>
+<input
+type="password"
+id="pw"
+placeholder="合言葉を入力">
 
-    <input
-      type="password"
-      id="pw"
-      placeholder="合言葉を入力">
+<button onclick="checkPassword()">
+入室
+</button>
 
-    <button onclick="checkPassword()">
-      入室
-    </button>
+<p id="error"></p>
 
-    <p id="error"></p>
-
-  </div>
+</div>
 
 </div>
 
 <div id="mainPage" class="hidden">
 
-  <div class="header">
-    <h1>WAKABA PORTAL</h1>
-    <p>提出物・学習支援サイト</p>
-  </div>
+<div class="header">
 
-  <div class="container">
+<h1>WAKABA PORTAL</h1>
 
-    <div id="content"></div>
+<p>ログイン成功</p>
 
-  </div>
+</div>
 
 </div>
 
 <script>
 
-const SHEET_ID =
-"1aMZqKCpTziQJJeL30ijG9SN15gAnzdB6jwbxhrO8Kvw";
+function checkPassword(){
 
-let PASSWORD = "";
-let EXAM_DATE = "";
-let GRADUATION_DATE = "";
-let NOTICE = "";
+    const pw =
+    document.getElementById("pw").value;
 
-async function loadSettings(){
+    if(pw === "wakaba2026"){
 
-  const url =
-  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?gid=1806886382&tqx=out:json`;
+        document.getElementById("loginPage")
+        .classList.add("hidden");
 
-  const response = await fetch(url);
-  const text = await response.text();
+        document.getElementById("mainPage")
+        .classList.remove("hidden");
 
-  const json =
-  JSON.parse(text.substring(47).slice(0,-2));
+    }else{
 
-  json.table.rows.forEach(row=>{
+        document.getElementById("error")
+        .textContent =
+        "合言葉が違います";
 
-    const key = row.c[0]?.v;
-    const value = row.c[1]?.v;
-
-    if(key === "パスワード") PASSWORD = value;
-    if(key === "共通テスト") EXAM_DATE = value;
-    if(key === "卒業式") GRADUATION_DATE = value;
-    if(key === "お知らせ") NOTICE = value;
-
-  });
+    }
 
 }
 
-async function checkPassword(){
+</script>
 
-  if(PASSWORD === ""){
-    await loadSettings();
-  }
-
-  const pw =
-  document.getElementById("pw").value;
-
-  if(pw === PASSWORD){
-
-    document.getElementById("loginPage")
-    .classList.add("hidden");
-
-    document.getElementById("mainPage")
-    .classList.remove("hidden");
-
-    loadTasks();
-
-  }else{
-
-    document.getElementById("error")
-    .textContent =
-    "合言葉が違います";
-
-  }
-
-}
-
-async function loadTasks(){
-
-  const url =
-  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?gid=0&tqx=out:json`;
-
-  const response = await fetch(url);
-  const text = await response.text();
-
-  const json =
-  JSON.parse(text.substring(47).slice(0,-2));
-
-  const rows =
-  json.table.rows;
-
-  let tasks = [];
-
-  rows.forEach(row=>{
-
-    const name =
-    row.c[0]?.v;
-
-    const deadline =
-    row.c[1]?.f ||
-    row.c[1]?.v;
-
-    if(!name
+</body>
+</html>
