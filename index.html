@@ -1,816 +1,92 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#651a2b">
-  <title>WAKABA PORTAL</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --maroon: #651a2b;
-      --dark-maroon: #45101d;
-      --text: #252126;
-      --muted: #716b70;
-      --line: #e5dfe1;
-      --paper: #ffffff;
-      --background: #f5f2f3;
-      --warning: #a66a18;
-      --danger: #a52a2a;
-      --shadow: 0 12px 32px rgba(52, 24, 32, 0.08);
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: var(--background);
-      color: var(--text);
-      font-family: "BIZ UDPGothic", "BIZ UDゴシック", "Yu Gothic", sans-serif;
-    }
-
-    button, input { font: inherit; }
-    .hidden { display: none !important; }
-
-    .header {
-      background: var(--paper);
-      border-top: 7px solid var(--maroon);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .header-inner {
-      width: min(1080px, calc(100% - 40px));
-      margin: auto;
-      padding: 25px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .logo {
-      padding: 0;
-      border: 0;
-      background: none;
-      color: var(--maroon);
-      font-weight: 700;
-      font-size: clamp(1.55rem, 5vw, 2.1rem);
-      letter-spacing: 0.1em;
-      cursor: pointer;
-    }
-
-    .tagline {
-      margin: 6px 0 0;
-      color: var(--muted);
-      font-size: 0.86rem;
-    }
-
-    .back-button {
-      padding: 9px 14px;
-      border: 1px solid var(--line);
-      background: var(--paper);
-      color: var(--maroon);
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .main {
-      width: min(1080px, calc(100% - 40px));
-      margin: auto;
-      padding: 40px 0 70px;
-    }
-
-    .section { margin-top: 42px; }
-    .section:first-child { margin-top: 0; }
-
-    .section-title {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin: 0 0 18px;
-      color: var(--maroon);
-      font-size: 1.13rem;
-    }
-
-    .section-title::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: var(--line);
-    }
-
-    .milestone-grid, .page-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .milestone-card {
-      padding: 28px;
-      background: linear-gradient(145deg, var(--dark-maroon), var(--maroon));
-      color: white;
-      box-shadow: var(--shadow);
-    }
-
-    .milestone-card:nth-child(even) {
-      background: linear-gradient(145deg, #3d3538, #665a5f);
-    }
-
-    .milestone-name { margin: 0; font-weight: 700; }
-    .milestone-count { margin-top: 22px; font-size: 4rem; font-weight: 700; line-height: 1; }
-    .milestone-count small { font-size: 1rem; }
-    .milestone-date { margin: 14px 0 0; color: #e8dfe2; font-size: 0.83rem; }
-
-    .page-card {
-      padding: 23px;
-      text-align: left;
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-top: 4px solid var(--maroon);
-      box-shadow: 0 8px 24px rgba(52, 24, 32, 0.05);
-      cursor: pointer;
-    }
-
-    .page-card h3 { margin: 0; font-size: 1.12rem; }
-    .page-card p { margin: 9px 0 0; color: var(--muted); font-size: 0.84rem; }
-
-    .page-heading { padding-bottom: 20px; border-bottom: 1px solid var(--line); }
-    .page-heading h2 { margin: 0; color: var(--maroon); font-size: 1.8rem; }
-    .page-heading p { margin: 7px 0 0; color: var(--muted); }
-
-    .auth-box {
-      max-width: 470px;
-      margin: 25px auto 0;
-      padding: 32px;
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-top: 5px solid var(--maroon);
-      box-shadow: var(--shadow);
-    }
-
-    .auth-box h3, .auth-box p { text-align: center; }
-    .auth-box h3 { margin: 0; color: var(--maroon); }
-    .auth-box p { color: var(--muted); font-size: 0.88rem; }
-    .auth-box label { display: block; margin: 22px 0 8px; font-weight: 700; }
-    .auth-box input { width: 100%; padding: 12px; border: 1px solid #cccccc; }
-    .auth-box button { width: 100%; margin-top: 15px; padding: 12px; border: 0; background: var(--maroon); color: white; font-weight: 700; cursor: pointer; }
-    .auth-message { min-height: 1.3em; color: var(--danger) !important; }
-
-    .notice-list, .task-list, .resource-list, .site-list, .video-list {
-      display: grid;
-      gap: 11px;
-    }
-
-    .notice-card, .task-card, .resource-card, .video-card {
-      background: var(--paper);
-      border: 1px solid var(--line);
-      box-shadow: 0 7px 22px rgba(52, 24, 32, 0.045);
-    }
-
-    .notice-card { padding: 22px 24px; border-left: 5px solid var(--maroon); }
-    .date { margin: 0 0 7px; color: var(--muted); font-size: 0.8rem; }
-    .notice-card p:last-child { margin: 0; font-size: 1.12rem; line-height: 1.8; white-space: pre-wrap; }
-
-    .new-badge {
-      display: inline-block;
-      margin-right: 7px;
-      padding: 3px 7px;
-      background: var(--maroon);
-      color: white;
-      border-radius: 3px;
-      font-size: 0.7rem;
-      font-weight: 700;
-    }
-
-    .content-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 22px;
-      align-items: start;
-    }
-
-    .content-column { display: grid; gap: 32px; }
-
-    .task-card {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 18px;
-      align-items: center;
-      padding: 19px 21px;
-      border-left: 5px solid var(--maroon);
-    }
-
-    .task-card.warning { border-left-color: var(--warning); }
-    .task-card.danger { border-left-color: var(--danger); }
-    .task-card h3, .resource-card h3 { margin: 0; font-size: 1rem; }
-    .task-card .date { margin-top: 7px; }
-    .remaining-days { color: var(--maroon); white-space: nowrap; }
-    .task-card.warning .remaining-days { color: var(--warning); }
-    .task-card.danger .remaining-days { color: var(--danger); }
-    .remaining-days strong { font-size: 2.2rem; }
-
-    .resource-card { padding: 19px 21px; }
-    .description { margin: 8px 0 13px; color: var(--muted); font-size: 0.9rem; line-height: 1.65; }
-
-    .open-link {
-      display: inline-block;
-      padding: 8px 13px;
-      border: 1px solid var(--maroon);
-      color: var(--maroon);
-      font-size: 0.88rem;
-      font-weight: 700;
-      text-decoration: none;
-    }
-
-    .open-link:hover { background: var(--maroon); color: white; }
-
-    .video-card { overflow: hidden; }
-    .video-frame { position: relative; aspect-ratio: 16 / 9; background: #171315; }
-    .video-thumbnail { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: #171315; cursor: pointer; }
-    .video-thumbnail img { display: block; width: 100%; height: 100%; object-fit: cover; }
-
-    .play-mark {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 62px;
-      height: 44px;
-      transform: translate(-50%, -50%);
-      border-radius: 10px;
-      background: rgba(101, 26, 43, 0.95);
-    }
-
-    .play-mark::after {
-      content: "";
-      position: absolute;
-      left: 25px;
-      top: 12px;
-      border-top: 10px solid transparent;
-      border-bottom: 10px solid transparent;
-      border-left: 16px solid white;
-    }
-
-    .video-frame iframe { width: 100%; height: 100%; border: 0; }
-    .video-info { padding: 17px 19px; }
-    .video-info h3 { margin: 0; font-size: 1rem; }
-    .video-info p { margin: 8px 0 0; color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
-
-    .loading, .empty, .error {
-      padding: 23px;
-      background: var(--paper);
-      border: 1px solid var(--line);
-      color: var(--muted);
-      text-align: center;
-    }
-
-    .error { color: var(--danger); border-left: 5px solid var(--danger); text-align: left; }
-    .footer { padding: 25px; border-top: 1px solid var(--line); background: #eee9eb; color: var(--muted); text-align: center; font-size: 0.78rem; }
-
-    @media (max-width: 720px) {
-      .header-inner { align-items: flex-start; flex-direction: column; }
-      .milestone-grid, .page-grid, .content-grid { grid-template-columns: 1fr; }
-      .task-card { grid-template-columns: 1fr; }
-      .main { width: min(100% - 28px, 1080px); padding-top: 28px; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#651a2b">
+<title>WAKABA PORTAL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--m:#651a2b;--dm:#45101d;--text:#252126;--muted:#716b70;--line:#e5dfe1;--paper:#fff;--bg:#f5f2f3;--warn:#a66a18;--danger:#a52a2a;--shadow:0 12px 32px rgba(52,24,32,.08)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:"BIZ UDPGothic","BIZ UDゴシック","Yu Gothic",sans-serif}button,input{font:inherit}.hidden{display:none!important}
+.header{background:var(--paper);border-top:7px solid var(--m);border-bottom:1px solid var(--line)}.header-inner{width:min(1080px,calc(100% - 40px));margin:auto;padding:25px 0;display:flex;justify-content:space-between;align-items:center;gap:20px}.logo{padding:0;border:0;background:none;color:var(--m);font-weight:700;font-size:clamp(1.55rem,5vw,2.1rem);letter-spacing:.1em;cursor:pointer}.tagline{margin:6px 0 0;color:var(--muted);font-size:.86rem}.back-button{padding:9px 14px;border:1px solid var(--line);background:var(--paper);color:var(--m);font-weight:700;cursor:pointer}
+.main{width:min(1080px,calc(100% - 40px));margin:auto;padding:40px 0 70px}.section{margin-top:42px}.section:first-child{margin-top:0}.section-title{display:flex;align-items:center;gap:14px;margin:0 0 18px;color:var(--m);font-size:1.13rem}.section-title:after{content:"";flex:1;height:1px;background:var(--line)}
+.milestone-grid,.page-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.milestone-card{padding:28px;background:linear-gradient(145deg,var(--dm),var(--m));color:#fff;box-shadow:var(--shadow)}.milestone-card:nth-child(even){background:linear-gradient(145deg,#3d3538,#665a5f)}.milestone-name{margin:0;font-weight:700}.milestone-count{margin-top:22px;font-size:4rem;font-weight:700;line-height:1}.milestone-count small{font-size:1rem}.milestone-date{margin:14px 0 0;color:#e8dfe2;font-size:.83rem}
+.page-card{padding:23px;text-align:left;background:var(--paper);border:1px solid var(--line);border-top:4px solid var(--m);box-shadow:0 8px 24px rgba(52,24,32,.05);cursor:pointer}.page-card h3{margin:0;font-size:1.12rem}.page-card p{margin:9px 0 0;color:var(--muted);font-size:.84rem}.page-heading{padding-bottom:20px;border-bottom:1px solid var(--line)}.page-heading h2{margin:0;color:var(--m);font-size:1.8rem}.page-heading p{margin:7px 0 0;color:var(--muted)}
+.auth-box{max-width:470px;margin:25px auto 0;padding:32px;background:var(--paper);border:1px solid var(--line);border-top:5px solid var(--m);box-shadow:var(--shadow)}.auth-box h3,.auth-box p{text-align:center}.auth-box h3{margin:0;color:var(--m)}.auth-box p{color:var(--muted);font-size:.88rem}.auth-box label{display:block;margin:22px 0 8px;font-weight:700}.auth-box input{width:100%;padding:12px;border:1px solid #ccc}.auth-box button{width:100%;margin-top:15px;padding:12px;border:0;background:var(--m);color:#fff;font-weight:700;cursor:pointer}.auth-message{min-height:1.3em;color:var(--danger)!important}
+.top-content-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}.bottom-content-grid{display:grid;grid-template-columns:2fr 1fr;gap:22px;align-items:start}.content-column{display:grid;gap:32px}.notice-list,.task-list,.resource-list,.site-list,.video-list{display:grid;gap:11px}.notice-card,.task-card,.resource-card,.video-card{background:var(--paper);border:1px solid var(--line);box-shadow:0 7px 22px rgba(52,24,32,.045)}
+.notice-card{padding:22px 24px;border-left:5px solid var(--m)}.date{margin:0 0 7px;color:var(--muted);font-size:.8rem}.notice-card p:last-child{margin:0;font-size:1.12rem;line-height:1.8;white-space:pre-wrap}.new-badge{display:inline-block;margin-right:7px;padding:3px 7px;background:var(--m);color:#fff;border-radius:3px;font-size:.7rem;font-weight:700}
+.task-card{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;padding:19px 21px;border-left:5px solid var(--m)}.task-card.warning{border-left-color:var(--warn)}.task-card.danger{border-left-color:var(--danger)}.task-card h3,.resource-card h3{margin:0;font-size:1rem}.task-card .date{margin-top:7px}.remaining-days{color:var(--m);white-space:nowrap}.task-card.warning .remaining-days{color:var(--warn)}.task-card.danger .remaining-days{color:var(--danger)}.remaining-days strong{font-size:2.2rem}
+.resource-card{padding:19px 21px}.description{margin:8px 0 13px;color:var(--muted);font-size:.9rem;line-height:1.65}.open-link{display:inline-block;padding:8px 13px;border:1px solid var(--m);color:var(--m);font-size:.88rem;font-weight:700;text-decoration:none}.open-link:hover{background:var(--m);color:#fff}
+.video-card{overflow:hidden}.video-frame{position:relative;aspect-ratio:16/9;background:#171315}.video-thumbnail{display:block;width:100%;height:100%;padding:0;border:0;background:#171315;cursor:pointer}.video-thumbnail img{display:block;width:100%;height:100%;object-fit:cover}.play-mark{position:absolute;left:50%;top:50%;width:62px;height:44px;transform:translate(-50%,-50%);border-radius:10px;background:rgba(101,26,43,.95)}.play-mark:after{content:"";position:absolute;left:25px;top:12px;border-top:10px solid transparent;border-bottom:10px solid transparent;border-left:16px solid #fff}.video-frame iframe{width:100%;height:100%;border:0}.video-info{padding:17px 19px}.video-info h3{margin:0;font-size:1rem}.video-info p{margin:8px 0 0;color:var(--muted);font-size:.88rem;line-height:1.6}
+.loading,.empty,.error{padding:23px;background:var(--paper);border:1px solid var(--line);color:var(--muted);text-align:center}.error{color:var(--danger);border-left:5px solid var(--danger);text-align:left}.footer{padding:25px;border-top:1px solid var(--line);background:#eee9eb;color:var(--muted);text-align:center;font-size:.78rem}
+@media(max-width:720px){.header-inner{align-items:flex-start;flex-direction:column}.milestone-grid,.page-grid,.top-content-grid,.bottom-content-grid{grid-template-columns:1fr}.task-card{grid-template-columns:1fr}.main{width:min(100% - 28px,1080px);padding-top:28px}}
+</style>
 </head>
 <body>
-  <header class="header">
-    <div class="header-inner">
-      <div>
-        <button id="logo" class="logo" type="button">WAKABA PORTAL</button>
-        <p class="tagline">授業・ホームルーム支援サイト</p>
-      </div>
-      <button id="backButton" class="back-button hidden" type="button">トップページへ</button>
-    </div>
-  </header>
-
-  <main class="main">
-    <div id="homeView">
-      <section class="section">
-        <h2 class="section-title">大切な日まで</h2>
-        <div id="milestoneGrid" class="milestone-grid"><div class="loading">読み込み中です。</div></div>
-      </section>
-
-      <section class="section">
-        <h2 class="section-title">お知らせ</h2>
-        <div id="homeNoticeList" class="notice-list"><div class="loading">読み込み中です。</div></div>
-      </section>
-
-      <section class="section">
-        <h2 class="section-title">ページ一覧</h2>
-        <div id="pageGrid" class="page-grid"><div class="loading">読み込み中です。</div></div>
-      </section>
-    </div>
-
-    <div id="detailView" class="hidden">
-      <div class="page-heading">
-        <h2 id="pageName"></h2>
-        <p>お知らせ・提出物・資料</p>
-      </div>
-
-      <section id="authView" class="auth-box">
-        <h3>合言葉の入力</h3>
-        <p>このページの合言葉を入力してください。</p>
-        <label for="pagePassword">合言葉</label>
-        <input id="pagePassword" type="text" autocomplete="off">
-        <button id="unlockButton" type="button">ページを開く</button>
-        <p id="authMessage" class="auth-message"></p>
-      </section>
-
-      <div id="pageContent" class="hidden">
-        <section id="noticeSection" class="section">
-          <h2 class="section-title">お知らせ</h2>
-          <div id="noticeList" class="notice-list"></div>
-        </section>
-
-        <div class="section content-grid">
-          <div class="content-column">
-            <section id="taskSection">
-              <h2 class="section-title">提出物</h2>
-              <div id="taskList" class="task-list"></div>
-            </section>
-
-            <section id="resourceSection">
-              <h2 class="section-title">資料</h2>
-              <div id="resourceList" class="resource-list"></div>
-            </section>
-          </div>
-
-          <div class="content-column">
-            <section id="siteSection">
-              <h2 class="section-title">おすすめサイト</h2>
-              <div id="siteList" class="site-list"></div>
-            </section>
-
-            <section id="videoSection">
-              <h2 class="section-title">おすすめ動画</h2>
-              <div id="videoList" class="video-list"></div>
-            </section>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <footer class="footer">個人運営の学習支援ページです。学校公式サイトではありません。</footer>
-
-  <script>
-    "use strict";
-
-    const SHEET_ID = "1aMZqKCpTziQJJeL30ijG9SN15gAnzdB6jwbxhrO8Kvw";
-    const GIDS = {
-      milestones: "402688501",
-      pages: "1759134828",
-      notices: "1027056613",
-      tasks: "0",
-      resources: "2055490412"
-    };
-
-    const LOGIN_DURATION = 24 * 60 * 60 * 1000;
-    const state = { pages: [], currentPage: null };
-    const $ = id => document.getElementById(id);
-
-    function sheetUrl(gid, headers = 1) {
-      return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?gid=${gid}&headers=${headers}&tqx=out:json`;
-    }
-
-    async function getRows(gid, headers = 1) {
-      const response = await fetch(sheetUrl(gid, headers), { cache: "no-store" });
-      const text = await response.text();
-      const start = text.indexOf("{");
-      const end = text.lastIndexOf("}");
-
-      if (!response.ok || start < 0 || end < 0) {
-        throw new Error("スプレッドシートを読み込めません。");
-      }
-
-      const data = JSON.parse(text.slice(start, end + 1));
-      return data.table.rows || [];
-    }
-
-    function cellValue(cell) {
-      if (!cell) return "";
-      if (cell.f !== null && cell.f !== undefined) return String(cell.f).trim();
-      if (cell.v !== null && cell.v !== undefined) return String(cell.v).trim();
-      return "";
-    }
-
-    function escapeHtml(value) {
-      return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-
-    function parseDate(value) {
-      const text = String(value || "").trim();
-
-      let match = text.match(/^Date\((\d{4}),(\d{1,2}),(\d{1,2})\)$/);
-      if (match) {
-        return new Date(Number(match[1]), Number(match[2]), Number(match[3]));
-      }
-
-      match = text.match(/(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})/);
-      if (match) {
-        return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
-      }
-
-      return null;
-    }
-
-    function today() {
-      const now = new Date();
-      return new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    }
-
-    function daysUntil(date) {
-      return Math.ceil((date - today()) / (1000 * 60 * 60 * 24));
-    }
-
-    function formatDate(date) {
-      return new Intl.DateTimeFormat("ja-JP", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        weekday: "short"
-      }).format(date);
-    }
-
-    function isPublic(value) {
-      return String(value || "").replace(/[\s　]/g, "") === "公開";
-    }
-
-    function isNew(date) {
-      if (!date) return false;
-      const age = Math.floor((today() - date) / (1000 * 60 * 60 * 24));
-      return age >= 0 && age <= 2;
-    }
-
-    function newBadge(date) {
-      return isNew(date) ? '<span class="new-badge">新着</span>' : "";
-    }
-
-    async function createHash(value) {
-      const data = new TextEncoder().encode(value);
-      const hash = await crypto.subtle.digest("SHA-256", data);
-      return Array.from(new Uint8Array(hash))
-        .map(byte => byte.toString(16).padStart(2, "0"))
-        .join("");
-    }
-
-    async function hasValidSession(page) {
-      try {
-        const saved = JSON.parse(localStorage.getItem("wakaba-page-" + page.id));
-        if (!saved || Date.now() >= saved.expiresAt) return false;
-        return saved.signature === await createHash(page.password);
-      } catch {
-        return false;
-      }
-    }
-
-    async function saveSession(page) {
-      localStorage.setItem("wakaba-page-" + page.id, JSON.stringify({
-        expiresAt: Date.now() + LOGIN_DURATION,
-        signature: await createHash(page.password)
-      }));
-    }
-
-    async function loadMilestones() {
-      try {
-        const items = [];
-        for (const row of await getRows(GIDS.milestones)) {
-          const name = cellValue(row.c?.[0]);
-          const date = parseDate(cellValue(row.c?.[1]));
-          if (name && date && daysUntil(date) >= 0) items.push({ name, date });
-        }
-
-        items.sort((a, b) => a.date - b.date);
-        $("milestoneGrid").innerHTML = items.length
-          ? items.map(item => `
-              <article class="milestone-card">
-                <p class="milestone-name">${escapeHtml(item.name)}まで</p>
-                <div class="milestone-count">${daysUntil(item.date)} <small>日</small></div>
-                <p class="milestone-date">${escapeHtml(formatDate(item.date))}</p>
-              </article>`).join("")
-          : '<div class="empty">表示する日程はありません。</div>';
-      } catch (error) {
-        console.error(error);
-        $("milestoneGrid").innerHTML = '<div class="error">日程を読み込めませんでした。</div>';
-      }
-    }
-
-    async function loadPages() {
-      try {
-        state.pages = [];
-        for (const row of await getRows(GIDS.pages)) {
-          const page = {
-            id: cellValue(row.c?.[0]),
-            name: cellValue(row.c?.[1]),
-            password: cellValue(row.c?.[2]),
-            order: Number(cellValue(row.c?.[3])) || 999
-          };
-          if (page.id && page.name && page.password) state.pages.push(page);
-        }
-
-        state.pages.sort((a, b) => a.order - b.order);
-        $("pageGrid").innerHTML = state.pages.map(page => `
-          <button class="page-card" type="button" data-page-id="${escapeHtml(page.id)}">
-            <h3>${escapeHtml(page.name)}</h3>
-            <p>ページを開く</p>
-          </button>`).join("");
-
-        document.querySelectorAll("[data-page-id]").forEach(button => {
-          button.addEventListener("click", () => openPage(button.dataset.pageId));
-        });
-      } catch (error) {
-        console.error(error);
-        $("pageGrid").innerHTML = '<div class="error">ページ一覧を読み込めませんでした。</div>';
-      }
-    }
-
-    async function getNoticeData(pageId) {
-      const items = [];
-      const currentDate = today();
-
-      for (const row of await getRows(GIDS.notices)) {
-        const rowPageId = cellValue(row.c?.[0]);
-        const text = cellValue(row.c?.[1]);
-        const publicationDate = parseDate(cellValue(row.c?.[2]));
-        const endDate = parseDate(cellValue(row.c?.[3]));
-        const publicStatus = cellValue(row.c?.[4]);
-
-        if (rowPageId !== pageId || !isPublic(publicStatus)) continue;
-        if (!text || !publicationDate) continue;
-        if (publicationDate > currentDate) continue;
-        if (endDate && endDate < currentDate) continue;
-
-        items.push({ text, date: publicationDate });
-      }
-
-      items.sort((a, b) => b.date - a.date);
-      return items;
-    }
-
-    function createNoticeHtml(items) {
-      return items.map(item => `
-        <article class="notice-card">
-          <p class="date">${newBadge(item.date)}${escapeHtml(formatDate(item.date))}</p>
-          <p>${escapeHtml(item.text)}</p>
-        </article>`).join("");
-    }
-
-    async function loadHomeNotices() {
-      try {
-        const items = await getNoticeData("home");
-        $("homeNoticeList").innerHTML = items.length
-          ? createNoticeHtml(items)
-          : '<div class="empty">現在、お知らせはありません。</div>';
-      } catch (error) {
-        console.error(error);
-        $("homeNoticeList").innerHTML = '<div class="error">お知らせを読み込めませんでした。</div>';
-      }
-    }
-
-    async function openPage(pageId) {
-      const page = state.pages.find(item => item.id === pageId);
-      if (!page) return;
-
-      state.currentPage = page;
-      $("homeView").classList.add("hidden");
-      $("detailView").classList.remove("hidden");
-      $("backButton").classList.remove("hidden");
-      $("pageName").textContent = page.name;
-      $("pagePassword").value = "";
-      $("authMessage").textContent = "";
-
-      if (await hasValidSession(page)) {
-        showPageContent();
-        await loadPageData();
-      } else {
-        $("authView").classList.remove("hidden");
-        $("pageContent").classList.add("hidden");
-      }
-
-      history.replaceState(null, "", "?page=" + encodeURIComponent(pageId));
-      window.scrollTo(0, 0);
-    }
-
-    function goHome() {
-      $("detailView").classList.add("hidden");
-      $("homeView").classList.remove("hidden");
-      $("backButton").classList.add("hidden");
-      state.currentPage = null;
-      history.replaceState(null, "", location.pathname);
-      window.scrollTo(0, 0);
-    }
-
-    function showPageContent() {
-      $("authView").classList.add("hidden");
-      $("pageContent").classList.remove("hidden");
-    }
-
-    async function unlockPage() {
-      if (!state.currentPage) return;
-
-      if ($("pagePassword").value !== state.currentPage.password) {
-        $("authMessage").textContent = "合言葉が違います。";
-        return;
-      }
-
-      await saveSession(state.currentPage);
-      showPageContent();
-      await loadPageData();
-    }
-
-    async function loadPageData() {
-      await Promise.all([loadPageNotices(), loadTasks(), loadResources()]);
-    }
-
-    async function loadPageNotices() {
-      try {
-        const items = await getNoticeData(state.currentPage.id);
-        if (!items.length) {
-          $("noticeSection").classList.add("hidden");
-          return;
-        }
-
-        $("noticeSection").classList.remove("hidden");
-        $("noticeList").innerHTML = createNoticeHtml(items);
-      } catch (error) {
-        console.error(error);
-        $("noticeSection").classList.add("hidden");
-      }
-    }
-
-    async function loadTasks() {
-      try {
-        const items = [];
-        for (const row of await getRows(GIDS.tasks)) {
-          const pageId = cellValue(row.c?.[0]);
-          const name = cellValue(row.c?.[1]);
-          const deadline = parseDate(cellValue(row.c?.[2]));
-          const publicStatus = cellValue(row.c?.[3]);
-
-          if (pageId !== state.currentPage.id || !isPublic(publicStatus)) continue;
-          if (!name || !deadline || daysUntil(deadline) < 0) continue;
-          items.push({ name, deadline, remaining: daysUntil(deadline) });
-        }
-
-        items.sort((a, b) => a.deadline - b.deadline);
-        if (!items.length) {
-          $("taskSection").classList.add("hidden");
-          return;
-        }
-
-        $("taskSection").classList.remove("hidden");
-        $("taskList").innerHTML = items.map(item => {
-          const className = item.remaining <= 3 ? "danger" : item.remaining <= 7 ? "warning" : "";
-          return `
-            <article class="task-card ${className}">
-              <div>
-                <h3>${escapeHtml(item.name)}</h3>
-                <p class="date">締切 ${escapeHtml(formatDate(item.deadline))}</p>
-              </div>
-              <div class="remaining-days"><strong>${item.remaining}</strong> 日</div>
-            </article>`;
-        }).join("");
-      } catch (error) {
-        console.error(error);
-        $("taskSection").classList.add("hidden");
-      }
-    }
-
-    function getYouTubeId(url) {
-      try {
-        const parsed = new URL(url);
-        if (parsed.hostname === "youtu.be") return parsed.pathname.split("/").filter(Boolean)[0] || "";
-        if (parsed.pathname === "/watch") return parsed.searchParams.get("v") || "";
-        const match = parsed.pathname.match(/^\/(?:shorts|embed)\/([^/?]+)/);
-        return match ? match[1] : "";
-      } catch {
-        return "";
-      }
-    }
-
-    function playVideo(button) {
-      const videoId = button.dataset.videoId;
-      if (!videoId) return;
-      button.parentElement.innerHTML = `
-        <iframe
-          src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?autoplay=1"
-          title="YouTube動画"
-          allow="autoplay; encrypted-media; picture-in-picture"
-          allowfullscreen>
-        </iframe>`;
-    }
-
-    async function loadResources() {
-      try {
-        const documents = [];
-        const sites = [];
-        const videos = [];
-
-        for (const row of await getRows(GIDS.resources)) {
-          const pageId = cellValue(row.c?.[0]);
-          const name = cellValue(row.c?.[1]);
-          const description = cellValue(row.c?.[2]);
-          const url = cellValue(row.c?.[3]);
-          const publicStatus = cellValue(row.c?.[4]);
-          const publicationDate = parseDate(cellValue(row.c?.[5]));
-          const type = cellValue(row.c?.[6]) || "資料";
-
-          if (pageId !== state.currentPage.id || !isPublic(publicStatus)) continue;
-          if (!name || !/^https?:\/\//i.test(url)) continue;
-
-          const item = { name, description, url, publicationDate };
-          if (type === "おすすめサイト") {
-            sites.push(item);
-          } else if (type === "YouTube") {
-            item.videoId = getYouTubeId(url);
-            if (item.videoId) videos.push(item);
-          } else {
-            documents.push(item);
-          }
-        }
-
-        const sortByDate = (a, b) => (b.publicationDate || 0) - (a.publicationDate || 0);
-        documents.sort(sortByDate);
-        sites.sort(sortByDate);
-        videos.sort(sortByDate);
-
-        if (documents.length) {
-          $("resourceSection").classList.remove("hidden");
-          $("resourceList").innerHTML = documents.map(item => `
-            <article class="resource-card">
-              <h3>${newBadge(item.publicationDate)}${escapeHtml(item.name)}</h3>
-              ${item.description ? `<p class="description">${escapeHtml(item.description)}</p>` : ""}
-              <a class="open-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">資料を開く</a>
-            </article>`).join("");
-        } else {
-          $("resourceSection").classList.add("hidden");
-        }
-
-        if (sites.length) {
-          $("siteSection").classList.remove("hidden");
-          $("siteList").innerHTML = sites.map(item => `
-            <article class="resource-card">
-              <h3>${newBadge(item.publicationDate)}${escapeHtml(item.name)}</h3>
-              ${item.description ? `<p class="description">${escapeHtml(item.description)}</p>` : ""}
-              <a class="open-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">サイトを開く</a>
-            </article>`).join("");
-        } else {
-          $("siteSection").classList.add("hidden");
-        }
-
-        if (videos.length) {
-          $("videoSection").classList.remove("hidden");
-          $("videoList").innerHTML = videos.map(item => `
-            <article class="video-card">
-              <div class="video-frame">
-                <button class="video-thumbnail" type="button" data-video-id="${escapeHtml(item.videoId)}" aria-label="${escapeHtml(item.name)}を再生">
-                  <img src="https://i.ytimg.com/vi/${escapeHtml(item.videoId)}/hqdefault.jpg" alt="${escapeHtml(item.name)}のサムネイル" loading="lazy">
-                  <span class="play-mark" aria-hidden="true"></span>
-                </button>
-              </div>
-              <div class="video-info">
-                <h3>${newBadge(item.publicationDate)}${escapeHtml(item.name)}</h3>
-                ${item.description ? `<p>${escapeHtml(item.description)}</p>` : ""}
-              </div>
-            </article>`).join("");
-
-          document.querySelectorAll(".video-thumbnail").forEach(button => {
-            button.addEventListener("click", () => playVideo(button));
-          });
-        } else {
-          $("videoSection").classList.add("hidden");
-        }
-      } catch (error) {
-        console.error(error);
-        $("resourceSection").classList.add("hidden");
-        $("siteSection").classList.add("hidden");
-        $("videoSection").classList.add("hidden");
-      }
-    }
-
-    $("logo").addEventListener("click", goHome);
-    $("backButton").addEventListener("click", goHome);
-    $("unlockButton").addEventListener("click", unlockPage);
-    $("pagePassword").addEventListener("keydown", event => {
-      if (event.key === "Enter") unlockPage();
-    });
-
-    (async function initialize() {
-      await Promise.all([loadMilestones(), loadHomeNotices(), loadPages()]);
-      const pageId = new URLSearchParams(location.search).get("page");
-      if (pageId) openPage(pageId);
-    })();
-  </script>
+<header class="header"><div class="header-inner"><div><button id="logo" class="logo" type="button">WAKABA PORTAL</button><p class="tagline">授業・ホームルーム支援サイト</p></div><button id="backButton" class="back-button hidden" type="button">トップページへ</button></div></header>
+<main class="main">
+<div id="homeView">
+<section class="section"><h2 class="section-title">大切な日まで</h2><div id="milestoneGrid" class="milestone-grid"><div class="loading">読み込み中です。</div></div></section>
+<section class="section"><h2 class="section-title">お知らせ</h2><div id="homeNoticeList" class="notice-list"><div class="loading">読み込み中です。</div></div></section>
+<section class="section"><h2 class="section-title">ページ一覧</h2><div id="pageGrid" class="page-grid"><div class="loading">読み込み中です。</div></div></section>
+</div>
+<div id="detailView" class="hidden">
+<div class="page-heading"><h2 id="pageName"></h2><p>お知らせ・提出物・資料</p></div>
+<section id="authView" class="auth-box"><h3>合言葉の入力</h3><p>このページの合言葉を入力してください。</p><label for="pagePassword">合言葉</label><input id="pagePassword" type="text" autocomplete="off"><button id="unlockButton" type="button">ページを開く</button><p id="authMessage" class="auth-message"></p></section>
+<div id="pageContent" class="hidden">
+<div id="topContentGrid" class="section top-content-grid">
+<section id="noticeSection"><h2 class="section-title">お知らせ</h2><div id="noticeList" class="notice-list"></div></section>
+<section id="taskSection"><h2 class="section-title">提出物</h2><div id="taskList" class="task-list"></div></section>
+</div>
+<div class="section bottom-content-grid">
+<section id="resourceSection"><h2 class="section-title">資料</h2><div id="resourceList" class="resource-list"></div></section>
+<div class="content-column"><section id="siteSection"><h2 class="section-title">おすすめサイト</h2><div id="siteList" class="site-list"></div></section><section id="videoSection"><h2 class="section-title">おすすめ動画</h2><div id="videoList" class="video-list"></div></section></div>
+</div>
+</div></div>
+</main>
+<footer class="footer">個人運営の学習支援ページです。学校公式サイトではありません。</footer>
+<script>
+"use strict";
+const SHEET_ID="1aMZqKCpTziQJJeL30ijG9SN15gAnzdB6jwbxhrO8Kvw";
+const GIDS={milestones:"402688501",pages:"1759134828",notices:"1027056613",tasks:"0",resources:"2055490412"};
+const LOGIN_DURATION=24*60*60*1000;
+const state={pages:[],currentPage:null};
+const $=id=>document.getElementById(id);
+function sheetUrl(gid,headers=1){return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?gid=${gid}&headers=${headers}&tqx=out:json`}
+async function getRows(gid,headers=1){const response=await fetch(sheetUrl(gid,headers),{cache:"no-store"});const text=await response.text();const start=text.indexOf("{");const end=text.lastIndexOf("}");if(!response.ok||start<0||end<0)throw new Error("スプレッドシートを読み込めません。");const data=JSON.parse(text.slice(start,end+1));return data.table.rows||[]}
+function cellValue(cell){if(!cell)return"";if(cell.f!=null)return String(cell.f).trim();if(cell.v!=null)return String(cell.v).trim();return""}
+function escapeHtml(value){return String(value).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
+function parseDate(value){const text=String(value||"").trim();let match=text.match(/^Date\((\d{4}),(\d{1,2}),(\d{1,2})\)$/);if(match)return new Date(Number(match[1]),Number(match[2]),Number(match[3]));match=text.match(/(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})/);if(match)return new Date(Number(match[1]),Number(match[2])-1,Number(match[3]));return null}
+function today(){const now=new Date();return new Date(now.getFullYear(),now.getMonth(),now.getDate())}
+function daysUntil(date){return Math.ceil((date-today())/86400000)}
+function formatDate(date){return new Intl.DateTimeFormat("ja-JP",{year:"numeric",month:"long",day:"numeric",weekday:"short"}).format(date)}
+function isPublic(value){return String(value||"").replace(/[\s　]/g,"")==="公開"}
+function isNew(date){if(!date)return false;const age=Math.floor((today()-date)/86400000);return age>=0&&age<=2}
+function newBadge(date){return isNew(date)?'<span class="new-badge">新着</span>':""}
+async function createHash(value){const data=new TextEncoder().encode(value);const hash=await crypto.subtle.digest("SHA-256",data);return Array.from(new Uint8Array(hash)).map(byte=>byte.toString(16).padStart(2,"0")).join("")}
+async function hasValidSession(page){try{const saved=JSON.parse(localStorage.getItem("wakaba-page-"+page.id));if(!saved||Date.now()>=saved.expiresAt)return false;return saved.signature===await createHash(page.password)}catch{return false}}
+async function saveSession(page){localStorage.setItem("wakaba-page-"+page.id,JSON.stringify({expiresAt:Date.now()+LOGIN_DURATION,signature:await createHash(page.password)}))}
+async function loadMilestones(){try{const items=[];for(const row of await getRows(GIDS.milestones)){const name=cellValue(row.c?.[0]);const date=parseDate(cellValue(row.c?.[1]));if(name&&date&&daysUntil(date)>=0)items.push({name,date})}items.sort((a,b)=>a.date-b.date);$("milestoneGrid").innerHTML=items.length?items.map(item=>`<article class="milestone-card"><p class="milestone-name">${escapeHtml(item.name)}まで</p><div class="milestone-count">${daysUntil(item.date)} <small>日</small></div><p class="milestone-date">${escapeHtml(formatDate(item.date))}</p></article>`).join(""):'<div class="empty">表示する日程はありません。</div>'}catch(error){console.error(error);$("milestoneGrid").innerHTML='<div class="error">日程を読み込めませんでした。</div>'}}
+async function loadPages(){try{state.pages=[];for(const row of await getRows(GIDS.pages)){const page={id:cellValue(row.c?.[0]),name:cellValue(row.c?.[1]),password:cellValue(row.c?.[2]),order:Number(cellValue(row.c?.[3]))||999};if(page.id&&page.name&&page.password)state.pages.push(page)}state.pages.sort((a,b)=>a.order-b.order);$("pageGrid").innerHTML=state.pages.map(page=>`<button class="page-card" type="button" data-page-id="${escapeHtml(page.id)}"><h3>${escapeHtml(page.name)}</h3><p>ページを開く</p></button>`).join("");document.querySelectorAll("[data-page-id]").forEach(button=>button.addEventListener("click",()=>openPage(button.dataset.pageId)))}catch(error){console.error(error);$("pageGrid").innerHTML='<div class="error">ページ一覧を読み込めませんでした。</div>'}}
+async function getNoticeData(pageId){const items=[];const currentDate=today();for(const row of await getRows(GIDS.notices)){const rowPageId=cellValue(row.c?.[0]);const text=cellValue(row.c?.[1]);const publicationDate=parseDate(cellValue(row.c?.[2]));const endDate=parseDate(cellValue(row.c?.[3]));const publicStatus=cellValue(row.c?.[4]);if(rowPageId!==pageId||!isPublic(publicStatus))continue;if(!text||!publicationDate)continue;if(publicationDate>currentDate)continue;if(endDate&&endDate<currentDate)continue;items.push({text,date:publicationDate})}items.sort((a,b)=>b.date-a.date);return items}
+function createNoticeHtml(items){return items.map(item=>`<article class="notice-card"><p class="date">${newBadge(item.date)}${escapeHtml(formatDate(item.date))}</p><p>${escapeHtml(item.text)}</p></article>`).join("")}
+async function loadHomeNotices(){try{const items=await getNoticeData("home");$("homeNoticeList").innerHTML=items.length?createNoticeHtml(items):'<div class="empty">現在、お知らせはありません。</div>'}catch(error){console.error(error);$("homeNoticeList").innerHTML='<div class="error">お知らせを読み込めませんでした。</div>'}}
+async function openPage(pageId){const page=state.pages.find(item=>item.id===pageId);if(!page)return;state.currentPage=page;$("homeView").classList.add("hidden");$("detailView").classList.remove("hidden");$("backButton").classList.remove("hidden");$("pageName").textContent=page.name;$("pagePassword").value="";$("authMessage").textContent="";if(await hasValidSession(page)){showPageContent();await loadPageData()}else{$("authView").classList.remove("hidden");$("pageContent").classList.add("hidden")}history.replaceState(null,"","?page="+encodeURIComponent(pageId));window.scrollTo(0,0)}
+function goHome(){$("detailView").classList.add("hidden");$("homeView").classList.remove("hidden");$("backButton").classList.add("hidden");state.currentPage=null;history.replaceState(null,"",location.pathname);window.scrollTo(0,0)}
+function showPageContent(){$("authView").classList.add("hidden");$("pageContent").classList.remove("hidden")}
+async function unlockPage(){if(!state.currentPage)return;if($("pagePassword").value!==state.currentPage.password){$("authMessage").textContent="合言葉が違います。";return}await saveSession(state.currentPage);showPageContent();await loadPageData()}
+function adjustTopGrid(){const noticeVisible=!$("noticeSection").classList.contains("hidden");const taskVisible=!$("taskSection").classList.contains("hidden");$("topContentGrid").classList.toggle("hidden",!noticeVisible&&!taskVisible);$("topContentGrid").style.gridTemplateColumns=noticeVisible&&taskVisible?"1fr 1fr":"1fr"}
+async function loadPageData(){await Promise.all([loadPageNotices(),loadTasks(),loadResources()]);adjustTopGrid()}
+async function loadPageNotices(){try{const items=await getNoticeData(state.currentPage.id);if(!items.length){$("noticeSection").classList.add("hidden");return}$("noticeSection").classList.remove("hidden");$("noticeList").innerHTML=createNoticeHtml(items)}catch(error){console.error(error);$("noticeSection").classList.add("hidden")}}
+async function loadTasks(){try{const items=[];for(const row of await getRows(GIDS.tasks)){const pageId=cellValue(row.c?.[0]);const name=cellValue(row.c?.[1]);const deadline=parseDate(cellValue(row.c?.[2]));const publicStatus=cellValue(row.c?.[3]);if(pageId!==state.currentPage.id||!isPublic(publicStatus))continue;if(!name||!deadline||daysUntil(deadline)<0)continue;items.push({name,deadline,remaining:daysUntil(deadline)})}items.sort((a,b)=>a.deadline-b.deadline);if(!items.length){$("taskSection").classList.add("hidden");return}$("taskSection").classList.remove("hidden");$("taskList").innerHTML=items.map(item=>{const className=item.remaining<=3?"danger":item.remaining<=7?"warning":"";return `<article class="task-card ${className}"><div><h3>${escapeHtml(item.name)}</h3><p class="date">締切 ${escapeHtml(formatDate(item.deadline))}</p></div><div class="remaining-days"><strong>${item.remaining}</strong> 日</div></article>`}).join("")}catch(error){console.error(error);$("taskSection").classList.add("hidden")}}
+function getYouTubeId(url){try{const parsed=new URL(url);if(parsed.hostname==="youtu.be")return parsed.pathname.split("/").filter(Boolean)[0]||"";if(parsed.pathname==="/watch")return parsed.searchParams.get("v")||"";const match=parsed.pathname.match(/^\/(?:shorts|embed)\/([^/?]+)/);return match?match[1]:""}catch{return""}}
+function playVideo(button){const videoId=button.dataset.videoId;if(!videoId)return;button.parentElement.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?autoplay=1" title="YouTube動画" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`}
+async function loadResources(){try{const documents=[],sites=[],videos=[];for(const row of await getRows(GIDS.resources)){const pageId=cellValue(row.c?.[0]);const name=cellValue(row.c?.[1]);const description=cellValue(row.c?.[2]);const url=cellValue(row.c?.[3]);const publicStatus=cellValue(row.c?.[4]);const publicationDate=parseDate(cellValue(row.c?.[5]));const type=cellValue(row.c?.[6])||"資料";if(pageId!==state.currentPage.id||!isPublic(publicStatus))continue;if(!name||!/^https?:\/\//i.test(url))continue;const item={name,description,url,publicationDate};if(type==="おすすめサイト")sites.push(item);else if(type==="YouTube"){item.videoId=getYouTubeId(url);if(item.videoId)videos.push(item)}else documents.push(item)}const sortByDate=(a,b)=>(b.publicationDate||0)-(a.publicationDate||0);documents.sort(sortByDate);sites.sort(sortByDate);videos.sort(sortByDate);if(documents.length){$("resourceSection").classList.remove("hidden");$("resourceList").innerHTML=documents.map(item=>`<article class="resource-card"><h3>${newBadge(item.publicationDate)}${escapeHtml(item.name)}</h3>${item.description?`<p class="description">${escapeHtml(item.description)}</p>`:""}<a class="open-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">資料を開く</a></article>`).join("")}else $("resourceSection").classList.add("hidden");if(sites.length){$("siteSection").classList.remove("hidden");$("siteList").innerHTML=sites.map(item=>`<article class="resource-card"><h3>${newBadge(item.publicationDate)}${escapeHtml(item.name)}</h3>${item.description?`<p class="description">${escapeHtml(item.description)}</p>`:""}<a class="open-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">サイトを開く</a></article>`).join("")}else $("siteSection").classList.add("hidden");if(videos.length){$("videoSection").classList.remove("hidden");$("videoList").innerHTML=videos.map(item=>`<article class="video-card"><div class="video-frame"><button class="video-thumbnail" type="button" data-video-id="${escapeHtml(item.videoId)}" aria-label="${escapeHtml(item.name)}を再生"><img src="https://i.ytimg.com/vi/${escapeHtml(item.videoId)}/hqdefault.jpg" alt="${escapeHtml(item.name)}のサムネイル" loading="lazy"><span class="play-mark" aria-hidden="true"></span></button></div><div class="video-info"><h3>${newBadge(item.publicationDate)}${escapeHtml(item.name)}</h3>${item.description?`<p>${escapeHtml(item.description)}</p>`:""}</div></article>`).join("");document.querySelectorAll(".video-thumbnail").forEach(button=>button.addEventListener("click",()=>playVideo(button)))}else $("videoSection").classList.add("hidden")}catch(error){console.error(error);$("resourceSection").classList.add("hidden");$("siteSection").classList.add("hidden");$("videoSection").classList.add("hidden")}}
+$("logo").addEventListener("click",goHome);$("backButton").addEventListener("click",goHome);$("unlockButton").addEventListener("click",unlockPage);$("pagePassword").addEventListener("keydown",event=>{if(event.key==="Enter")unlockPage()});
+(async function initialize(){await Promise.all([loadMilestones(),loadHomeNotices(),loadPages()]);const pageId=new URLSearchParams(location.search).get("page");if(pageId)openPage(pageId)})();
+</script>
 </body>
 </html>
