@@ -178,6 +178,7 @@
     .page-card p { margin: 9px 0 0; color: var(--muted); font-size: 0.84rem; }
 
     .page-heading {
+      margin-bottom: 28px;
       padding-bottom: 0;
       border-bottom: 0;
     }
@@ -265,15 +266,8 @@
     }
 
     .task-card.warning { border-left-color: var(--warning); }
-    .task-card.urgent {
-      border-left-color: var(--urgent);
-      background: var(--urgent-pale);
-    }
-    .task-card.today {
-      border-left-color: var(--today);
-      background: var(--today-pale);
-      box-shadow: 0 8px 24px rgba(143, 0, 27, 0.10);
-    }
+    .task-card.urgent { border-left-color: var(--urgent); background: var(--urgent-pale); }
+    .task-card.today { border-left-color: var(--today); background: var(--today-pale); box-shadow: 0 8px 24px rgba(143, 0, 27, 0.10); }
     .task-card h3, .resource-card h3 { margin: 0; font-size: 1rem; }
     .task-card .date { margin-top: 7px; }
     .remaining-days { color: var(--main); white-space: nowrap; text-align: right; }
@@ -281,16 +275,7 @@
     .task-card.urgent .remaining-days { color: var(--urgent); }
     .task-card.today .remaining-days { color: var(--today); }
     .remaining-days strong { font-size: 2.2rem; }
-    .deadline-badge {
-      display: inline-block;
-      margin-bottom: 7px;
-      padding: 3px 8px;
-      border-radius: 3px;
-      color: #fff;
-      font-size: 0.72rem;
-      font-weight: 700;
-      line-height: 1.3;
-    }
+    .deadline-badge { display: inline-block; margin-bottom: 7px; padding: 3px 8px; border-radius: 3px; color: #fff; font-size: 0.72rem; font-weight: 700; line-height: 1.3; }
     .deadline-badge.urgent { background: var(--urgent); }
     .deadline-badge.today { background: var(--today); }
     .today-text { font-size: 1.05rem; font-weight: 700; }
@@ -697,14 +682,8 @@
         $("taskSection").classList.toggle("hidden", !items.length);
         if (items.length) $("taskList").innerHTML = items.map(item => {
           const className = item.remaining === 0 ? "today" : item.remaining <= 3 ? "urgent" : item.remaining <= 7 ? "warning" : "";
-          const badge = item.remaining === 0
-            ? '<span class="deadline-badge today">本日締切</span>'
-            : item.remaining <= 3
-              ? '<span class="deadline-badge urgent">締切間近</span>'
-              : '';
-          const remainingHtml = item.remaining === 0
-            ? '<span class="today-text">本日締切</span>'
-            : `<strong>${item.remaining}</strong> 日`;
+          const badge = item.remaining === 0 ? '<span class="deadline-badge today">本日締切</span>' : item.remaining <= 3 ? '<span class="deadline-badge urgent">締切間近</span>' : '';
+          const remainingHtml = item.remaining === 0 ? '<span class="today-text">本日締切</span>' : `<strong>${item.remaining}</strong> 日`;
           return `<article class="task-card ${className}"><div>${badge}<h3>${escapeHtml(item.name)}</h3><p class="date">締切 ${escapeHtml(formatDate(item.deadline))}</p></div><div class="remaining-days">${remainingHtml}</div></article>`;
         }).join("");
       } catch (error) { console.error(error); $("taskSection").classList.add("hidden"); }
